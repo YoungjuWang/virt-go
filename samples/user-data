@@ -1,0 +1,11 @@
+#cloud-config
+users:
+  - name: root
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2yEdM3sk3ZGisQ2nHrkR1SRM19pZktv+t3Uq8owYDGZiVKQVaGH3oqSJuAg4DgoF9icsJvPWYPtkQrppKTgJma/Wd4ZLAq3TqDWZKxUb+EfK75eoj1d8cgrbuUnSs2uUnGxBo/WghD7cPjxlB0GzRMNwbipt7bVDa2xsoI+HkOaGT+IEspxt9JgDMXtl/eGWfMwhU/LaxuJ5Ve6twDKDUGxfRSUlPwA4DnbEnpWIHFDqVvUSkdODTwsBkrzPAsdnPSBK/ap+IkdpeewoeSMLMol93SUJISYhr7lBqwjrgEWGfcDKhpu+NBKvFxNPI81NZWn1zzk/lVBysftkSreSRs5LwpFRsGjwe5hzSq4iZ8442jGmDCyT9tA4KXxThRdxKjx5UMaoh+RFh41s8C7qiuzatBnHRuSnLQ8bjR0UnrA9rSOs8tVyenczfQqf1F+Wa8dDmkiGv4RoVTp4ehjvaojgVc/tzMUxj5zJ/Dplpx9xnE3jHENQ60/GNJE3bLM0= yjwang@yjwang-ThinkPad-T14s-Gen-1
+password: testtest
+chpasswd:
+  list: |
+    root:testtest
+  expire: False
+ssh_pwauth: True
