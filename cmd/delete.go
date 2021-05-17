@@ -57,7 +57,9 @@ var deleteCmd = &cobra.Command{
 		}
 		for _, dom := range doms {
 			domName, _ := dom.GetName()
-			if (strings.Contains(domName, "virt-go")) && strings.Contains(domName, strconv.Itoa(Num)) {
+			splitName := strings.Split(domName, "-")
+			tail := splitName[len(splitName)-1]
+			if (strings.Contains(domName, "virt-go")) && tail == strconv.Itoa(Num) {
 				fmt.Println(domName, "shutdown!")
 				err = dom.Destroy()
 				if err != nil {
