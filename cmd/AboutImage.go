@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+
+	"github.com/cheggaaa/pb/v3"
 )
 
 func GenDomDisk(image string, Num int) (output string) {
@@ -46,15 +48,6 @@ func GenDomDisk(image string, Num int) (output string) {
 }
 
 func GenImage(base string, image string) {
-
-	//	_, err := os.Stat("/etc/virt-go/images/" + image)
-	//	if os.IsNotExist(err) {
-	//		fmt.Println("Image is not exist. Start to create")
-	//	} else {
-	//		fmt.Println("File already exists")
-	//		os.Exit(30)
-	//	}
-
 	in, err := os.Open(base)
 	if err != nil {
 		fmt.Println("Open base image", err)
@@ -69,10 +62,18 @@ func GenImage(base string, image string) {
 	}
 	defer out.Close()
 
-	if _, err = io.Copy(out, in); err != nil {
+	info, _ := in.Stat()
+	len := info.Size()
+	bar := pb.Full.Start64(len)
+
+	barReader := bar.NewProxyReader(in)
+
+	if _, err = io.Copy(out, barReader); err != nil {
 		fmt.Println("Copy err", err)
 		os.Exit(71)
 	}
+
+	bar.Finish()
 
 	err = out.Sync()
 	if err != nil {

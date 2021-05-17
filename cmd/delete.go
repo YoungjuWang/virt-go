@@ -17,27 +17,81 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
+	"libvirt.org/libvirt-go"
 )
 
 // deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Delete Selected VM",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+		Datadir, NetAddr = GetCFG()
+
+		if image != "" {
+			// Delete Image
+			err := os.Remove(Datadir + "/images/" + image)
+			os.Exit(0)
+			if err != nil {
+				fmt.Println("image can't be deleted : ", err)
+			}
+		} else if image == "" && Num == 0 {
+			cmd.Help()
+			os.Exit(33)
+		}
+
+		// Get libvirt connection
+		conn, err := libvirt.NewConnect("qemu:///system")
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer conn.Close()
+
+		doms, err := conn.ListAllDomains(libvirt.CONNECT_LIST_DOMAINS_PERSISTENT)
+		if err != nil {
+			fmt.Println(err)
+		}
+		for _, dom := range doms {
+			domName, _ := dom.GetName()
+			if (strings.Contains(domName, "virt-go")) && strings.Contains(domName, strconv.Itoa(Num)) {
+				fmt.Println(domName, "shutdown!")
+				err = dom.Destroy()
+				if err != nil {
+					fmt.Println("System Already Shutdown")
+				}
+
+				fmt.Println(domName, "will be deleted!")
+				err = dom.Undefine()
+				if err != nil {
+					panic(err)
+				}
+
+				err = os.Remove(Datadir + "/cloudinit/" + domName + "cloud-init.iso")
+				if err != nil {
+					panic(err)
+				}
+				err = os.Remove(Datadir + "/volumes/" + domName + "root")
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+		// destroy
+		// undefine
+		// delete Iso File
+		// delete Data File
+		fmt.Println("delete Finished")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(deleteCmd)
+	deleteCmd.Flags().IntVarP(&Num, "number", "n", 0, "Number of VM for identification (required)")
+	deleteCmd.Flags().StringVarP(&image, "image", "i", "", "Image that VM will use (required)")
 
 	// Here you will define your flags and configuration settings.
 
