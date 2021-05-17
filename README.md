@@ -171,3 +171,26 @@ Domain		Active		Address
 ========================================================
 virt-go-u20-63	true		192.168.123.63
 ```
+
+##### 5. 운영
+
+서버 접속
+
+- Default ID / PW : root / testtest
+
+`init` 과정에서 ssh-key를 수정했다면 `virt-go list` 로 확인되는 서버 IP로 ssh 접속하면 바로 접속이 돼야합니다.
+만약 수정하지 않았다면 재 수정 후 VM을 재 생성해보시기 바랍니다.
+
+```
+# ssh 192.168.123.63
+The authenticity of host '192.168.123.63 (192.168.123.63)' can't be established.
+ECDSA key fingerprint is SHA256:Z/sptVgUPGNaJXWgp4I4sGtChwg3FM4DAQLRCBXDb0Y.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?  yes
+```
+
+console 접속
+virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
+```
+# virsh console virt-go-u20-63
+도메인 virt-go-u20-63에 연결되었습니다
+```
