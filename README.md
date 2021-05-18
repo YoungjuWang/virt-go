@@ -189,6 +189,8 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?  yes
 ```
 
 console 접속
+
+
 virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 ```
 # virsh console virt-go-u20-63
@@ -196,6 +198,8 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 ```
 
 `virt-go` 업데이트
+
+
 별도의 Migration 및 중지 없이 Update 가능합니다.
 ```
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
