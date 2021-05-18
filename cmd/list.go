@@ -18,8 +18,10 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	libvirt "libvirt.org/libvirt-go"
 )
@@ -40,12 +42,13 @@ var listCmd = &cobra.Command{
 
 		fmt.Printf("!!! This list only contain about 'virt-go' \n\n")
 
+		// net list
 		nets, err := conn.ListAllNetworks(libvirt.CONNECT_LIST_NETWORKS_PERSISTENT)
 		if err != nil {
 			fmt.Println(err)
 		}
 		fmt.Printf("%s \t\t %s\n", "Network", "Active")
-		fmt.Printf("======================================\n")
+		fmt.Printf("=================================\n")
 		for _, net := range nets {
 			netName, _ := net.GetName()
 			if !(strings.Contains(netName, "virt-go")) {
@@ -54,28 +57,29 @@ var listCmd = &cobra.Command{
 			netStat, _ := net.IsActive()
 			fmt.Printf("%s \t\t %t\n", netName, netStat)
 		}
+		fmt.Printf("\n")
 
-		fmt.Printf("\n\n")
-
+		// image list
 		images, err := os.ReadDir(Datadir + "/images")
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Printf("%s\n", "Images")
-		fmt.Printf("=================\n")
+		fmt.Printf("%s", "Images : ")
+		//fmt.Printf("=================\n")
 
 		for _, image := range images {
-			fmt.Println(image.Name())
+			fmt.Print(image.Name(), " / ")
 		}
-
 		fmt.Printf("\n\n")
+
+		// dom list
 		doms, err := conn.ListAllDomains(libvirt.CONNECT_LIST_DOMAINS_PERSISTENT)
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Printf("%s\t\t%s\t\t%s\n", "Domain", "Active", "Address")
-		fmt.Printf("========================================================\n")
+
+		data := [][]string{}
 		for _, dom := range doms {
 			domName, _ := dom.GetName()
 			if !(strings.Contains(domName, "virt-go")) {
@@ -84,8 +88,14 @@ var listCmd = &cobra.Command{
 			domStat, _ := dom.IsActive()
 			splitName := strings.Split(domName, "-")
 			tail := splitName[len(splitName)-1]
-			fmt.Printf("%s\t%t\t\t%s\n", domName, domStat, NetAddr+"."+tail)
+
+			data = append(data, []string{domName, strconv.FormatBool(domStat), NetAddr + "." + tail})
+			//fmt.Printf("%s\t%t\t\t%s\n", domName, domStat, NetAddr+"."+tail)
 		}
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"Name", "IsActive", "IP"})
+		table.AppendBulk(data)
+		table.Render()
 	},
 }
 
