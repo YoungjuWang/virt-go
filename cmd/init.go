@@ -91,7 +91,7 @@ growpart:
 
 runcmd:
   - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-	- reboot`
+  - reboot`
 		userDataFile.WriteString(userData)
 
 		metaDataFile, err := os.Create(Datadir + "/cloudinit/meta-data")
