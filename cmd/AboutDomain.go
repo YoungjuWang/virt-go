@@ -12,7 +12,7 @@ import (
 // GenISO generate iso file with cloud-init
 func GenISO(Num int, image string, userData string, metaData string) string {
 	Datadir, NetAddr = GetCFG()
-	isoTmpName := Datadir +"/cloudinit/virt-go-" + image + "-" + strconv.Itoa(Num) + "cloud-init.iso"
+	isoTmpName := Datadir + "/cloudinit/virt-go-" + image + "-" + strconv.Itoa(Num) + "cloud-init.iso"
 
 	if _, err := os.Stat(isoTmpName); os.IsExist(err) {
 		if err := os.Remove(isoTmpName); err != nil {
@@ -136,6 +136,7 @@ func GetMAC(Num int) (macAddr string) {
 	switch {
 	case Num < 2:
 		fmt.Println("Number should be larger or equal than 2")
+		os.Exit(20)
 	case Num >= 2 && Num < 10:
 		macAddr = "02:00:AA:AA:AA:0" + strconv.Itoa(Num)
 	case Num >= 10 && Num < 100:

@@ -43,13 +43,27 @@ var createCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		Datadir, NetAddr = GetCFG()
+
+		if Num == 0 {
+			if _, err := os.Stat(Datadir + "/images/" + image); os.IsNotExist(err) {
+				fmt.Println("Don't Create 'VM' Only Create Image")
+				fmt.Printf("'%s' is not exist. 'virt-go' attempd to create image via 'base' image file. \n Enter base image full path : ", image)
+				fmt.Scanf("%s", &base)
+				GenImage(base, image)
+				os.Exit(0)
+			} else {
+				fmt.Printf("%s is already exists! \n", image)
+				os.Exit(0)
+			}
+		}
+
 		macAddr = GetMAC(Num)
 		userData = Datadir + "/cloudinit/user-data"
 		metaData = Datadir + "/cloudinit/meta-data"
 
 		// about image
 		if _, err := os.Stat(Datadir + "/images/" + image); os.IsNotExist(err) {
-			fmt.Println(Datadir + "/images/" + image)
+			//fmt.Println(Datadir + "/images/" + image)
 			fmt.Printf("'%s' is not exist. 'virt-go' attempd to create image via 'base' image file. \n Enter base image full path : ", image)
 			fmt.Scanf("%s", &base)
 			GenImage(base, image)
@@ -130,8 +144,7 @@ func init() {
 	// userData string
 	// metaData string
 	// domImage string
-	createCmd.Flags().IntVarP(&Num, "number", "n", 0, "Number of VM for identification (required)")
-	createCmd.MarkFlagRequired("number")
+	createCmd.Flags().IntVarP(&Num, "number", "n", 0, "Number of VM for identification")
 	createCmd.Flags().StringVarP(&image, "image", "i", "", "Image that VM will use (required)")
 	createCmd.MarkFlagRequired("image")
 	createCmd.Flags().IntVarP(&cpu, "cpu", "c", 2, "number of core")
