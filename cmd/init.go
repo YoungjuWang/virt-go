@@ -90,6 +90,7 @@ growpart:
   ignore_growroot_disabled: false
 
 runcmd:
+  - sed '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
   - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
   - reboot`
 		userDataFile.WriteString(userData)
