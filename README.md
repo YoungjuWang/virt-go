@@ -23,7 +23,8 @@ Download Manager Command
 
 Install Manager Command
 ```bash
-# chmod +x virt-go; mv virt-go /usr/local/bin/
+# chmod +x virt-go
+# install virt-go /usr/local/bin/
 ```
 
 
@@ -31,7 +32,7 @@ Install Manager Command
 ---
 
 
-0. 모든 command에는 Help Page를 제공합니다.
+#### 0. 모든 command에는 Help Page를 제공합니다.
 ```bash
 # virt-go --help
 virt-go is inspired by 'fast-vm' by Ondrej
@@ -194,7 +195,10 @@ virt-go-u20-63	true		192.168.123.63
 ```
 
 
-##### 5. 운영
+
+
+### 운영
+---
 
 
 **서버 접속**
@@ -228,7 +232,8 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 별도의 Migration 및 중지 없이 Update 가능합니다.
 ```
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
-# chmod +x virt-go; mv -f virt-go /usr/local/bin/
+# chmod +x virt-go
+# install virt-go /usr/local/bin/
 ```
 
 
