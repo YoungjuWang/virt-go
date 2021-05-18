@@ -83,8 +83,15 @@ chpasswd:
     root:testtest
   expire: False
 ssh_pwauth: True
+
+growpart:
+  mode: auto
+  devices: ["/"]
+  ignore_growroot_disabled: false
+
 runcmd:
-  - growpart /dev/sda 1`
+  - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+	- reboot`
 		userDataFile.WriteString(userData)
 
 		metaDataFile, err := os.Create(Datadir + "/cloudinit/meta-data")

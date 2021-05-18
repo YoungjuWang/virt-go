@@ -56,7 +56,7 @@ VM에서 사용할 Network Address와 VM Data들이 저장될 Directory로 지�
 
 위 command가 종료되면 아래 경로에 `virt-go` 설정 파일이 생성되며
 ```bash
-# cat /etc/virt-go/virt-go.cfg 
+# cat /etc/virt-go/virt-go.cfg
 Datadir=/data/virt-go
 NetAddr=192.168.123
 ```
@@ -74,7 +74,7 @@ NetAddr=192.168.123
 
 이후 `user-data`에서 key-file을 update합니다.
 ```bash
-# cat /data/virt-go/cloudinit/user-data 
+# cat /data/virt-go/cloudinit/user-data
 #cloud-config
 users:
   - name: root
@@ -103,10 +103,10 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 ```
 # virt-go create -i u20 -n 62
 /data/virt-go/images/u20
-'u20' is not exist. 'virt-go' attempd to create image via 'base' image file. 
+'u20' is not exist. 'virt-go' attempd to create image via 'base' image file.
  Enter base image full path : /usr/vm-template/focal-server-cloudimg-amd64.qcow2
 1.30 GiB / 1.30 GiB [----------------------------------------------------------------------------------------------] 100.00% 1.45 GiB p/s 1.1s
-"virt-go-u20-62" is created! 
+"virt-go-u20-62" is created!
 ```
 
 2-2 사전에 있는 Image로 VM을 생성하는 경우
@@ -120,7 +120,7 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 
 ```
 # virt-go list
-!!! This list only contain about 'virt-go' 
+!!! This list only contain about 'virt-go'
 
 Network 		 Active
 ======================================
@@ -156,7 +156,7 @@ delete Finished
 확인
 ```
 # virt-go list
-!!! This list only contain about 'virt-go' 
+!!! This list only contain about 'virt-go'
 
 Network 		 Active
 ======================================
@@ -189,6 +189,8 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?  yes
 ```
 
 console 접속
+
+
 virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 ```
 # virsh console virt-go-u20-63
@@ -196,6 +198,8 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 ```
 
 `virt-go` 업데이트
+
+
 별도의 Migration 및 중지 없이 Update 가능합니다.
 ```
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
