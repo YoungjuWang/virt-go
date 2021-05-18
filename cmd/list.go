@@ -21,6 +21,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gookit/color"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	libvirt "libvirt.org/libvirt-go"
@@ -31,6 +32,9 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list",
 	Run: func(cmd *cobra.Command, args []string) {
+
+		red := color.FgRed.Render
+		green := color.FgGreen.Render
 
 		Datadir, NetAddr = GetCFG()
 
@@ -66,7 +70,6 @@ var listCmd = &cobra.Command{
 		}
 
 		fmt.Printf("%s", "Images : ")
-		//fmt.Printf("=================\n")
 
 		for _, image := range images {
 			fmt.Print(image.Name(), " / ")
@@ -89,7 +92,18 @@ var listCmd = &cobra.Command{
 			splitName := strings.Split(domName, "-")
 			tail := splitName[len(splitName)-1]
 
-			data = append(data, []string{domName, strconv.FormatBool(domStat), NetAddr + "." + tail})
+			var colorStat string
+			if domStat {
+				domS := strconv.FormatBool(domStat)
+				domS = "Active"
+				colorStat = green(domS)
+			} else {
+				domS := strconv.FormatBool(domStat)
+				domS = "Inactive"
+				colorStat = red(domS)
+			}
+
+			data = append(data, []string{domName, colorStat, NetAddr + "." + tail})
 			//fmt.Printf("%s\t%t\t\t%s\n", domName, domStat, NetAddr+"."+tail)
 		}
 		table := tablewriter.NewWriter(os.Stdout)
