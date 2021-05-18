@@ -10,14 +10,16 @@
 
 Prerequisite
 ```bash
-- For Cloud-init your system must have 'genisoimage' command
-- For resize image your system must have 'qemu-img' commnad
+- 'libvirtd' service
+- 'genisoimage' command
+- 'qemu-img' commnad
+- 'libvirt-lib' package
 ```
 
 
 Download Manager Command
 ```bash
-#  wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
+# wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
 ```
 
 
@@ -47,6 +49,7 @@ Available Commands:
   help        Help about any command
   init        Init 'virt-go' environment
   list        list
+  resize      Resize VM root volum. If VM is started, It will be shutdown automatically
 
 Flags:
   -h, --help   help for virt-go
@@ -86,20 +89,27 @@ NetAddr=192.168.123
 
 이후 `user-data`에서 key-file을 update합니다.
 ```bash
-# cat /data/virt-go/cloudinit/user-data
 #cloud-config
 users:
   - name: root
     ssh_authorized_keys:
-      - ssh-rsa AAAAB3N...
+      - <pub-key>
 password: testtest
 chpasswd:
   list: |
     root:testtest
   expire: False
 ssh_pwauth: True
+
+growpart:
+  mode: auto
+  devices: ["/"]
+  ignore_growroot_disabled: false
+
 runcmd:
-  - growpart /dev/sda 1
+  - sed '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
+  - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  - reboot
 ```
 
 
@@ -117,11 +127,15 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 
 ```
 # virt-go create -i u20 -n 62
-/data/virt-go/images/u20
-'u20' is not exist. 'virt-go' attempd to create image via 'base' image file.
+'u20' is not exist. 'virt-go' attempd to create image via 'base' image file. 
  Enter base image full path : /usr/vm-template/focal-server-cloudimg-amd64.qcow2
-1.30 GiB / 1.30 GiB [----------------------------------------------------------------------------------------------] 100.00% 1.45 GiB p/s 1.1s
-"virt-go-u20-62" is created!
+- Generate Image 'u20' from '/usr/vm-template/focal-server-cloudimg-amd64.qcow2' 
+1.30 GiB / 1.30 GiB [-------------------------------------------------------------------------------------------] 100.00% 922.03 MiB p/s 1.6s
+
+- Generate Domain Root Image '/data/virt-go/volumes/virt-go-u20-62root' from 'u20' 
+1.30 GiB / 1.30 GiB [-------------------------------------------------------------------------------------------] 100.00% 944.25 MiB p/s 1.6s
+
+"virt-go-u20-62" is created! 
 ```
 
 
@@ -129,7 +143,10 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 
 ```
 # virt-go create -i u20 -n 63
-"virt-go-u20-63" is created!
+- Generate Domain Root Image '/data/virt-go/volumes/virt-go-u20-63root' from 'u20' 
+1.30 GiB / 1.30 GiB [-------------------------------------------------------------------------------------------] 100.00% 624.37 MiB p/s 2.3s
+
+"virt-go-u20-63" is created! 
 ```
 
 
@@ -138,20 +155,20 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 
 ```
 # virt-go list
-!!! This list only contain about 'virt-go'
+!!! This list only contain about 'virt-go' 
 
-Network                  Active
+Network 		 Active
 =================================
-virt-go-net              true
+virt-go-net 		 true
 
-Images : u20 / u202 / u203 /
+Images : u20 / 
 
-+------------------+----------+-----------------+
-|       NAME       | ISACTIVE |       IP        |
-+------------------+----------+-----------------+
-| virt-go-u20-63   | true     | 192.168.134.63  |
-| virt-go-u20-63   | true     | 192.168.134.63  |
-+------------------+----------+-----------------+
++----------------+----------+-------------+
+|      NAME      | ISACTIVE |     IP      |
++----------------+----------+-------------+
+| virt-go-u20-62 | Active   | 10.62.99.62 |
+| virt-go-u20-63 | Active   | 10.62.99.63 |
++----------------+----------+-------------+
 ```
 
 
@@ -176,19 +193,19 @@ delete Finished
 확인
 ```
 # virt-go list
-!!! This list only contain about 'virt-go'
+!!! This list only contain about 'virt-go' 
 
-Network                  Active
+Network 		 Active
 =================================
-virt-go-net              true
+virt-go-net 		 true
 
-Images : u20 / u202 / u203 /
+Images : 
 
-+------------------+----------+-----------------+
-|       NAME       | ISACTIVE |       IP        |
-+------------------+----------+-----------------+
-| virt-go-u20-63   | true     | 192.168.134.63  |
-+------------------+----------+-----------------+
++----------------+----------+-------------+
+|      NAME      | ISACTIVE |     IP      |
++----------------+----------+-------------+
+| virt-go-u20-63 | Active   | 10.62.99.63 |
++----------------+----------+-------------+
 ```
 
 
@@ -228,6 +245,7 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 
 별도의 Migration 및 중지 없이 Update 가능합니다.
 ```
+# rm virt-go
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
 # chmod +x virt-go
 # install virt-go /usr/local/bin/
