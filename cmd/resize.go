@@ -62,10 +62,12 @@ var resizeCmd = &cobra.Command{
 				fmt.Printf("'%s' is already shutdown. resize started \n", domName)
 				cmd := exec.Command("qemu-img", "resize", Datadir+"/volumes/"+domName+"root", strconv.Itoa(size)+"G")
 
-				if err = cmd.Run(); err != nil {
-					fmt.Println(err)
+				result, err := cmd.CombinedOutput()
+				if err != nil {
+					fmt.Println(string(result))
 					os.Exit(90)
 				}
+				fmt.Println(string(result))
 
 				err = dom.Create()
 				if err != nil {
@@ -86,10 +88,12 @@ var resizeCmd = &cobra.Command{
 					fmt.Printf("'%s' has been shutdown and resize root volume to '%d'GB \n", domName, size)
 					cmd := exec.Command("qemu-img", "resize", Datadir+"/volumes/"+domName+"root", strconv.Itoa(size)+"G")
 
-					if err = cmd.Run(); err != nil {
-						fmt.Println(err)
+					result, err := cmd.CombinedOutput()
+					if err != nil {
+						fmt.Println(string(result))
 						os.Exit(90)
 					}
+					fmt.Println(string(result))
 
 					err = dom.Create()
 					if err != nil {
