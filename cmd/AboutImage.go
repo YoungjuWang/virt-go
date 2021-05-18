@@ -27,10 +27,20 @@ func GenDomDisk(image string, Num int) (output string) {
 	}
 	defer out.Close()
 
-	if _, err = io.Copy(out, in); err != nil {
+	info, _ := in.Stat()
+	len := info.Size()
+	bar := pb.Full.Start64(len)
+
+	barReader := bar.NewProxyReader(in)
+
+	fmt.Printf("- Generate Domain Root Image '%s' from '%s' \n", output, image)
+	if _, err = io.Copy(out, barReader); err != nil {
 		fmt.Println("Copy err", err)
 		os.Exit(71)
 	}
+
+	bar.Finish()
+	fmt.Println()
 
 	err = out.Sync()
 	if err != nil {
@@ -68,12 +78,14 @@ func GenImage(base string, image string) {
 
 	barReader := bar.NewProxyReader(in)
 
+	fmt.Printf("- Generate Image '%s' from '%s' \n", image, base)
 	if _, err = io.Copy(out, barReader); err != nil {
 		fmt.Println("Copy err", err)
 		os.Exit(71)
 	}
 
 	bar.Finish()
+	fmt.Println()
 
 	err = out.Sync()
 	if err != nil {
