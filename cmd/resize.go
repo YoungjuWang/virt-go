@@ -48,7 +48,7 @@ var resizeCmd = &cobra.Command{
 
 		for _, dom := range doms {
 			blkInfo, _ := dom.GetBlockInfo("sda", 0)
-			blkSize := strconv.FormatUint(blkInfo.Capacity/1024/1024/1024, 10) + " GB"
+			//blkSize := strconv.FormatUint(blkInfo.Capacity/1024/1024/1024, 10) + " GB"
 			domName, _ := dom.GetName()
 			domStat, _ := dom.IsActive()
 			splitName := strings.Split(domName, "-")
