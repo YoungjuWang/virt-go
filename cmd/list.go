@@ -35,6 +35,7 @@ type domInfo struct {
 	name  string
 	state string
 	addr  net.IP
+	size  string
 }
 
 // vmCmd represents the vm command
@@ -104,6 +105,8 @@ var listCmd = &cobra.Command{
 			tail := splitName[len(splitName)-1]
 			domAddr := NetAddr + "." + tail
 			domAddrToIP := net.ParseIP(domAddr)
+			blkInfo, _ := dom.GetBlockInfo("sda", 0)
+			blkSize := strconv.FormatUint(blkInfo.Capacity/1024/1024/1024, 10) + " GB"
 
 			var colorStat string
 			if domStat {
@@ -115,7 +118,7 @@ var listCmd = &cobra.Command{
 				domS = "Inactive"
 				colorStat = red(domS)
 			}
-			di := domInfo{tail, domName, colorStat, domAddrToIP}
+			di := domInfo{tail, domName, colorStat, domAddrToIP, blkSize}
 			dil = append(dil, di)
 		}
 
@@ -128,10 +131,10 @@ var listCmd = &cobra.Command{
 		data := [][]string{}
 		for _, d := range dil {
 			sda := d.addr.String()
-			data = append(data, []string{d.num, d.name, d.state, sda})
+			data = append(data, []string{d.num, d.name, d.state, sda, d.size})
 		}
 		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"Num", "DomainName", "Status", "IP-Address"})
+		table.SetHeader([]string{"Num", "DomainName", "Status", "IP-Address", "Root-Size"})
 		table.AppendBulk(data)
 		table.Render()
 	},
