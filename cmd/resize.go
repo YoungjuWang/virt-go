@@ -46,23 +46,16 @@ var resizeCmd = &cobra.Command{
 			fmt.Println(err)
 		}
 
+		count := 0
+
 		for _, dom := range doms {
 			blkInfo, _ := dom.GetBlockInfo("sda", 0)
-			//blkSize := strconv.FormatUint(blkInfo.Capacity/1024/1024/1024, 10) + " GB"
 			domName, _ := dom.GetName()
 			domStat, _ := dom.IsActive()
 			splitName := strings.Split(domName, "-")
 			tail := splitName[len(splitName)-1]
 
 			if tail == strconv.Itoa(Num) && domStat == false && uint64(size) > (blkInfo.Capacity/1024/1024/1024) {
-
-				/*
-					fmt.Println("'Size' should be bigger than before and 'Num' should be bigger than 2 also")
-					fmt.Println("Shrink is not supported")
-					fmt.Println("")
-					fmt.Printf("**'%s' Current Size : %s\n", domName, blkSize)
-					os.Exit(71)
-				*/
 
 				fmt.Printf("'%s' is already shutdown. resize started \n", domName)
 				cmd := exec.Command("qemu-img", "resize", Datadir+"/volumes/"+domName+"root", strconv.Itoa(size)+"G")
@@ -75,7 +68,8 @@ var resizeCmd = &cobra.Command{
 
 				fmt.Println(string(result))
 				fmt.Printf("**'%s' Current Size : %s\n", domName, strconv.Itoa(size)+"GB")
-
+				count++
+				fmt.Println(count)
 				err = dom.Create()
 				if err != nil {
 					panic(err)
@@ -103,17 +97,26 @@ var resizeCmd = &cobra.Command{
 					}
 					fmt.Println(string(result))
 					fmt.Printf("**'%s' Current Size : %s\n", domName, strconv.Itoa(size)+"GB")
-
+					count++
+					fmt.Println(count)
 					err = dom.Create()
 					if err != nil {
 						panic(err)
 					}
 				} else if agree == "no" {
+					count++
 					os.Exit(88)
 				}
+			} else if tail == strconv.Itoa(Num) && uint64(size) <= (blkInfo.Capacity/1024/1024/1024) {
+				fmt.Println("Size should be bigger than before")
+				fmt.Println("Current Size is ", blkInfo.Capacity/1024/1024/1024, "GB")
+				count++
 			} else {
 				continue
 			}
+		}
+		if count == 0 {
+			fmt.Println("There is no VM Number : ", Num)
 		}
 	},
 }
