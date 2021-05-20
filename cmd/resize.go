@@ -54,14 +54,16 @@ var resizeCmd = &cobra.Command{
 			splitName := strings.Split(domName, "-")
 			tail := splitName[len(splitName)-1]
 
-			if tail == strconv.Itoa(Num) && domStat == false {
-				if uint64(size) <= (blkInfo.Capacity / 1024 / 1024 / 1024) {
+			if tail == strconv.Itoa(Num) && domStat == false && uint64(size) > (blkInfo.Capacity/1024/1024/1024) {
+
+				/*
 					fmt.Println("'Size' should be bigger than before and 'Num' should be bigger than 2 also")
 					fmt.Println("Shrink is not supported")
 					fmt.Println("")
 					fmt.Printf("**'%s' Current Size : %s\n", domName, blkSize)
 					os.Exit(71)
-				}
+				*/
+
 				fmt.Printf("'%s' is already shutdown. resize started \n", domName)
 				cmd := exec.Command("qemu-img", "resize", Datadir+"/volumes/"+domName+"root", strconv.Itoa(size)+"G")
 
@@ -70,6 +72,7 @@ var resizeCmd = &cobra.Command{
 					fmt.Println(string(result))
 					os.Exit(90)
 				}
+
 				fmt.Println(string(result))
 				fmt.Printf("**'%s' Current Size : %s\n", domName, strconv.Itoa(size)+"GB")
 
@@ -78,14 +81,8 @@ var resizeCmd = &cobra.Command{
 					panic(err)
 				}
 
-			} else if tail == strconv.Itoa(Num) && domStat == true {
-				if uint64(size) <= (blkInfo.Capacity / 1024 / 1024 / 1024) {
-					fmt.Println("'Size' should be bigger than before and 'Num' should be bigger than 2 also")
-					fmt.Println("Shrink is not supported")
-					fmt.Println("")
-					fmt.Printf("**'%s' Current Size : %s\n", domName, blkSize)
-					os.Exit(71)
-				}
+			} else if tail == strconv.Itoa(Num) && domStat == true && uint64(size) > (blkInfo.Capacity/1024/1024/1024) {
+
 				var agree string
 				fmt.Printf("'%s' is Active \n", domName)
 				fmt.Printf("'virt-go' attempt to shutdown '%s' if you agree, enter 'yes' [yes/no] : ", domName)
@@ -111,7 +108,6 @@ var resizeCmd = &cobra.Command{
 					if err != nil {
 						panic(err)
 					}
-
 				} else if agree == "no" {
 					os.Exit(88)
 				}
