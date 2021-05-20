@@ -16,8 +16,11 @@ limitations under the License.
 package cmd
 
 import (
+	"bytes"
 	"fmt"
+	"net"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -26,6 +29,13 @@ import (
 	"github.com/spf13/cobra"
 	libvirt "libvirt.org/libvirt-go"
 )
+
+type domInfo struct {
+	num   string
+	name  string
+	state string
+	addr  net.IP
+}
 
 // vmCmd represents the vm command
 var listCmd = &cobra.Command{
@@ -77,12 +87,13 @@ var listCmd = &cobra.Command{
 		fmt.Printf("\n\n")
 
 		// dom list
+		dil := []domInfo{}
 		doms, err := conn.ListAllDomains(libvirt.CONNECT_LIST_DOMAINS_PERSISTENT)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		data := [][]string{}
+		// Set Domain Information Slice
 		for _, dom := range doms {
 			domName, _ := dom.GetName()
 			if !(strings.Contains(domName, "virt-go")) {
@@ -91,6 +102,8 @@ var listCmd = &cobra.Command{
 			domStat, _ := dom.IsActive()
 			splitName := strings.Split(domName, "-")
 			tail := splitName[len(splitName)-1]
+			domAddr := NetAddr + "." + tail
+			domAddrToIP := net.ParseIP(domAddr)
 
 			var colorStat string
 			if domStat {
@@ -102,12 +115,23 @@ var listCmd = &cobra.Command{
 				domS = "Inactive"
 				colorStat = red(domS)
 			}
+			di := domInfo{tail, domName, colorStat, domAddrToIP}
+			dil = append(dil, di)
+		}
 
-			data = append(data, []string{domName, colorStat, NetAddr + "." + tail})
-			//fmt.Printf("%s\t%t\t\t%s\n", domName, domStat, NetAddr+"."+tail)
+		// Sort via addr
+		sort.Slice(dil, func(i int, j int) bool {
+			return bytes.Compare(dil[i].addr, dil[j].addr) < 0
+		})
+
+		// Formatting table
+		data := [][]string{}
+		for _, d := range dil {
+			sda := d.addr.String()
+			data = append(data, []string{d.num, d.name, d.state, sda})
 		}
 		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"Name", "IsActive", "IP"})
+		table.SetHeader([]string{"Num", "DomainName", "Status", "IP-Address"})
 		table.AppendBulk(data)
 		table.Render()
 	},
