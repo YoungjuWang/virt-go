@@ -1,33 +1,24 @@
 ### INDEX
+
 ---
 
-[Info](#소개)
-[Download](#설치)
-[Usage](#사용법)
-- [Help Command](#0. 모든 command에는 Help Page를 제공합니다.)
-- [Initialization](#1. init command를 사용하여 시스템을 초기화합니다.)
-- [Create VM](#2. create command를 이용하여 VM을 생성합니다.)
-- [Get List of Resources](#3.생성한 Resource 정보 확인.)
-- [Delete Image of VM](#4. Resource 삭제.)
-[Operation](#운영)
-- [Connect to VM via SSH](#서버 접속)
-- [Connect to VM via Console](#console 접속)
-- [Update 'virt-go'](#`virt-go` 업데이트)
-- [Resize VM's Root Volume](#Resize Root Volume)
-- [Start/Stop VM](#Start/Stop VM)
-
+[TOC]
 
 ### 소개
+
 ---
 
 'virt-go' 는 libvirt 환경에서 VM을 편리하게 관리하기 위한 프로그램 입니다.
 
 
+
 ### 설치
+
 ---
 
 
 Prerequisite
+
 ```bash
 - 'libvirtd' service
 - 'genisoimage' command
@@ -37,23 +28,29 @@ Prerequisite
 
 
 Download Manager Command
+
 ```bash
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
 ```
 
 
 Install Manager Command
+
 ```bash
 # chmod +x virt-go
 # mv -f virt-go /usr/local/bin/
 ```
 
 
+
 ### 사용법
+
 ---
 
 
+
 #### 0. 모든 command에는 Help Page를 제공합니다.
+
 ```bash
 # virt-go --help
 virt-go is inspired by 'fast-vm' by Ondrej
@@ -80,16 +77,19 @@ Use "virt-go [command] --help" for more information about a command.
 ```
 
 
+
 #### 1. init command를 사용하여 시스템을 초기화합니다.
 
 
 VM에서 사용할 Network Address와 VM Data들이 저장될 Directory로 지정합니다.
+
 ```bash
 # virt-go init -c 192.168.123.0 -d /data/virt-go
 ```
 
 
 위 command가 종료되면 아래 경로에 `virt-go` 설정 파일이 생성되며
+
 ```bash
 # cat /etc/virt-go/virt-go.cfg
 Datadir=/data/virt-go
@@ -98,18 +98,20 @@ NetAddr=192.168.123
 
 
 지정한 Directory에 아래와 같이 구조가 생성됩니다.
+
 ```bash
 # tree /data/virt-go/
 /data/virt-go/
 ├── cloudinit
-│   ├── meta-data
-│   └── user-data
+│   ├── meta-data
+│   └── user-data
 ├── images
 └── volumes
 ```
 
 
 이후 `user-data`에서 key-file을 update합니다.
+
 ```bash
 #cloud-config
 users:
@@ -132,12 +134,14 @@ power_state:
 ```
 
 
+
 #### 2. create command를 이용하여 VM을 생성합니다.
 
 
 별도로 지정하지 않는이상`4GB Mem` `2 CPU` `/data/virt-go/cloudinit/user-data` `/data/virt-go/cloudinit/meta-data` 파일을 사용하여 VM이 생성됩니다.
 
 VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해당 번호를 가진 `MAC`과 `IP`를 가지게 됩니다.
+
 
 
 2-1. 사전에 없는 Image로 VM을 생성하는 경우.
@@ -158,6 +162,7 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 ```
 
 
+
 2-2 사전에 있는 Image로 VM을 생성하는 경우
 
 ```
@@ -167,6 +172,7 @@ VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해
 
 "virt-go-u20-63" is created! 
 ```
+
 
 
 #### 3.생성한 Resource 정보 확인.
@@ -192,16 +198,19 @@ Images : c76 / c79 / c83 / u18-04 / u20 /
 ```
 
 
+
 #### 4. Resource 삭제.
 
 
 Image 삭제
+
 ```
 # virt-go delete -i u20
 ```
 
 
 VM 삭제
+
 ```
 # virt-go delete -n 62
 virt-go-u20-62 shutdown!
@@ -211,6 +220,7 @@ delete Finished
 
 
 확인
+
 ```
 !!! This list only contain about 'virt-go' 
 
@@ -233,10 +243,12 @@ Images : c76 / c79 / c83 / u18-04 / u20 /
 
 
 ### 운영
+
 ---
 
 
-**서버 접속**
+
+#### 서버 접속
 
 - Default ID / PW : root / testtest
 
@@ -251,20 +263,24 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?  yes
 ```
 
 
-**console 접속**
+
+####  console 접속
 
 
 virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
+
 ```
 # virsh console virt-go-u20-63
 도메인 virt-go-u20-63에 연결되었습니다
 ```
 
 
-**`virt-go` 업데이트**
+
+####  virt-go 업데이트
 
 
 별도의 Migration 및 중지 없이 Update 가능합니다.
+
 ```
 # rm virt-go
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
@@ -273,7 +289,8 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 ```
 
 
-**Resize Root Volume**
+
+#### Resize Root Volume
 
 
 만약 VM이 실행 중이라면 동의를 구하고 자동으로 Shutdown 후 Start 됩니다.
@@ -284,10 +301,12 @@ Shrink는 지원하지 않고 확장만 가능합니다. Shrink는 `qemu-img` co
 ```
 
 
-**Start/Stop VM**
+
+####  Start/Stop VM
 
 
 Stop VM
+
 ```
 # virt-go stop -n 90
 virt-go-u20-90  is Stopped !
@@ -295,6 +314,7 @@ virt-go-u20-90  is Stopped !
 
 
 Start VM
+
 ```
 # virt-go start -n 90
 virt-go-u20-90  is Started !
