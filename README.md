@@ -2,9 +2,13 @@
 ---
 
 [Info](#소개)
+
 [Download](#설치)
+
 [Usage](#사용법)
+
   [Help Command](#0. 모든 command에는 Help Page를 제공합니다.)
+
   [Initialization](#1. init command를 사용하여 시스템을 초기화합니다.)
 
 - [Create VM](#2. create command를 이용하여 VM을 생성합니다.)
@@ -14,6 +18,7 @@
 - [Delete Image of VM](#4. Resource 삭제.)
 
 [Operation](#운영)
+
   [Connect to VM via SSH](#서버 접속)
   [Connect to VM via Console](#console 접속)
   [Update 'virt-go'](#`virt-go` 업데이트)
