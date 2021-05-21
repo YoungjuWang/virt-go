@@ -69,7 +69,6 @@ var resizeCmd = &cobra.Command{
 				fmt.Println(string(result))
 				fmt.Printf("**'%s' Current Size : %s\n", domName, strconv.Itoa(size)+"GB")
 				count++
-				fmt.Println(count)
 				err = dom.Create()
 				if err != nil {
 					panic(err)
@@ -98,7 +97,6 @@ var resizeCmd = &cobra.Command{
 					fmt.Println(string(result))
 					fmt.Printf("**'%s' Current Size : %s\n", domName, strconv.Itoa(size)+"GB")
 					count++
-					fmt.Println(count)
 					err = dom.Create()
 					if err != nil {
 						panic(err)

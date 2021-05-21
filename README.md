@@ -248,7 +248,7 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 # rm virt-go
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
 # chmod +x virt-go
-# install virt-go /usr/local/bin/
+# mv -o virt-go /usr/local/bin/
 ```
 
 
