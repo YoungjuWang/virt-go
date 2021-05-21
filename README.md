@@ -26,7 +26,7 @@ Download Manager Command
 Install Manager Command
 ```bash
 # chmod +x virt-go
-# install virt-go /usr/local/bin/
+# mv -f virt-go /usr/local/bin/
 ```
 
 
@@ -44,12 +44,15 @@ Usage:
   virt-go [command]
 
 Available Commands:
+  completion  Generate completion script
   create      Create VM (Virtual Machine)
   delete      Delete Selected VM
   help        Help about any command
   init        Init 'virt-go' environment
   list        list
   resize      Resize VM root volum. If VM is started, It will be shutdown automatically
+  start       Start virt-go VM
+  stop        Stop 'virt-go' VM
 
 Flags:
   -h, --help   help for virt-go
@@ -93,23 +96,20 @@ NetAddr=192.168.123
 users:
   - name: root
     ssh_authorized_keys:
-      - <pub-key>
+      - <pub_key>
 password: testtest
 chpasswd:
   list: |
     root:testtest
   expire: False
 ssh_pwauth: True
-
-growpart:
-  mode: auto
-  devices: ["/"]
-  ignore_growroot_disabled: false
-
 runcmd:
   - sed '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
-  - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-  - reboot
+  - growpart /dev/sda 1
+power_state:
+  mode: reboot
+  message: "Cloudinit finished"
+
 ```
 
 
@@ -161,14 +161,15 @@ Network 		 Active
 =================================
 virt-go-net 		 true
 
-Images : u20 / 
+Images : c76 / c79 / c83 / u18-04 / u20 / 
 
-+----------------+----------+-------------+
-|      NAME      | ISACTIVE |     IP      |
-+----------------+----------+-------------+
-| virt-go-u20-62 | Active   | 10.62.99.62 |
-| virt-go-u20-63 | Active   | 10.62.99.63 |
-+----------------+----------+-------------+
++-----+----------------+--------+----------------+-----------+
+| NUM |   DOMAINNAME   | STATUS |   IP-ADDRESS   | ROOT-SIZE |
++-----+----------------+--------+----------------+-----------+
+|  90 | virt-go-u20-90 | Active | 192.168.123.90 | 40 GB     |
+|  91 | virt-go-u20-91 | Active | 192.168.123.91 | 40 GB     |
+|  92 | virt-go-u20-92 | Active | 192.168.123.92 | 40 GB     |
++-----+----------------+--------+----------------+-----------+
 ```
 
 
@@ -192,20 +193,21 @@ delete Finished
 
 확인
 ```
-# virt-go list
 !!! This list only contain about 'virt-go' 
 
 Network 		 Active
 =================================
 virt-go-net 		 true
 
-Images : 
+Images : c76 / c79 / c83 / u18-04 / u20 / 
 
-+----------------+----------+-------------+
-|      NAME      | ISACTIVE |     IP      |
-+----------------+----------+-------------+
-| virt-go-u20-63 | Active   | 10.62.99.63 |
-+----------------+----------+-------------+
++-----+----------------+--------+----------------+-----------+
+| NUM |   DOMAINNAME   | STATUS |   IP-ADDRESS   | ROOT-SIZE |
++-----+----------------+--------+----------------+-----------+
+|  90 | virt-go-u20-90 | Active | 192.168.123.90 | 40 GB     |
+|  91 | virt-go-u20-91 | Active | 192.168.123.91 | 40 GB     |
+|  92 | virt-go-u20-92 | Active | 192.168.123.92 | 40 GB     |
++-----+----------------+--------+----------------+-----------+
 ```
 
 
@@ -248,7 +250,7 @@ virsh 명령을 빌려 VM이름으로 접속하면 됩니다.
 # rm virt-go
 # wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
 # chmod +x virt-go
-# mv -o virt-go /usr/local/bin/
+# mv -f virt-go /usr/local/bin/
 ```
 
 
@@ -260,4 +262,21 @@ Shrink는 지원하지 않고 확장만 가능합니다. Shrink는 `qemu-img` co
 
 ```
 # virt-go resize -n 30 -s 50
+```
+
+
+**Start/Stop VM**
+
+
+Stop VM
+```
+# virt-go stop -n 90
+virt-go-u20-90  is Stopped !
+```
+
+
+Start VM
+```
+# virt-go start -n 90
+virt-go-u20-90  is Started !
 ```
