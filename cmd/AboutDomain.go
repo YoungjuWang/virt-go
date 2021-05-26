@@ -114,7 +114,7 @@ func GenDomXML(image string, Num int, domImage string, cpu int, mem int, macAddr
 				{
 					MAC:    &libvirtxml.DomainInterfaceMAC{Address: macAddr},
 					Source: &libvirtxml.DomainInterfaceSource{Network: &libvirtxml.DomainInterfaceSourceNetwork{Network: "virt-go-net"}},
-					Model:  &libvirtxml.DomainInterfaceModel{Type: "e1000"},
+					Model:  &libvirtxml.DomainInterfaceModel{Type: "virtio"},
 				},
 			},
 			Consoles: []libvirtxml.DomainConsole{
