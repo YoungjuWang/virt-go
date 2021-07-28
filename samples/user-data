@@ -10,4 +10,4 @@ chpasswd:
   expire: False
 ssh_pwauth: True
 runcmd:
-  - growpart /dev/sda 1`
+  - growpart /dev/sda 1
