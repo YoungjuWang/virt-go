@@ -36,6 +36,7 @@ var (
 	userData string
 	metaData string
 	domImage string
+	desc string
 )
 
 // createCmd represents the create command
@@ -125,6 +126,12 @@ var createCmd = &cobra.Command{
 			fmt.Println(err)
 		}
 
+		// Create Description File
+		descFile := Datadir + "/volumes/virt-go-" + image + "-" + strconv.Itoa(Num) + "desc"
+		descOut,_ := os.Create(descFile)
+		defer descOut.Close()
+		descOut.WriteString(desc)
+
 		// Start Domain
 		err = dom.Create()
 		if err != nil {
@@ -173,8 +180,9 @@ func init() {
 	createCmd.MarkFlagRequired("image")
 	createCmd.Flags().IntVarP(&cpu, "cpu", "c", 2, "number of core")
 	createCmd.Flags().IntVarP(&mem, "mem", "m", 4, "size of memory (GB)")
+	createCmd.Flags().StringVarP(&desc, "desc", "d", "", "Description")
 	createCmd.Flags().StringVarP(&userData, "user-data", "u", "<Datadir>/cloudinit/user-data", "cloud-init user-data")
-	createCmd.Flags().StringVarP(&metaData, "meta-data", "d", "<Datadir>/cloudinit/meta-data", "cloud-init meta-data")
+	createCmd.Flags().StringVarP(&metaData, "meta-data", "t", "<Datadir>/cloudinit/meta-data", "cloud-init meta-data")
 
 	// Here you will define your flags and configuration settings.
 

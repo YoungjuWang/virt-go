@@ -23,6 +23,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"io/ioutil"
 
 	"github.com/gookit/color"
 	"github.com/olekukonko/tablewriter"
@@ -36,6 +37,7 @@ type domInfo struct {
 	state string
 	addr  net.IP
 	size  string
+	desc string
 }
 
 // vmCmd represents the vm command
@@ -107,6 +109,8 @@ var listCmd = &cobra.Command{
 			domAddrToIP := net.ParseIP(domAddr)
 			blkInfo, _ := dom.GetBlockInfo("sda", 0)
 			blkSize := strconv.FormatUint(blkInfo.Capacity/1024/1024/1024, 10) + " GB"
+			descriptionB,_ := ioutil.ReadFile(Datadir + "/volumes/" + domName + "desc")
+			description := string(descriptionB)
 
 			var colorStat string
 			if domStat {
@@ -118,7 +122,7 @@ var listCmd = &cobra.Command{
 				domS = "Inactive"
 				colorStat = red(domS)
 			}
-			di := domInfo{tail, domName, colorStat, domAddrToIP, blkSize}
+			di := domInfo{tail, domName, colorStat, domAddrToIP, blkSize, description}
 			dil = append(dil, di)
 		}
 
@@ -131,10 +135,10 @@ var listCmd = &cobra.Command{
 		data := [][]string{}
 		for _, d := range dil {
 			sda := d.addr.String()
-			data = append(data, []string{d.num, d.name, d.state, sda, d.size})
+			data = append(data, []string{d.num, d.name, d.state, sda, d.size, d.desc})
 		}
 		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"Num", "DomainName", "Status", "IP-Address", "Root-Size"})
+		table.SetHeader([]string{"Num", "DomainName", "Status", "IP-Address", "Root-Size", "Description"})
 		table.AppendBulk(data)
 		table.Render()
 	},

@@ -75,6 +75,7 @@ Usage:
   virt-go [command]
 
 Available Commands:
+  clear       Delete virt-network and dir about virt-go. before run this command please delete VM first.
   completion  Generate completion script
   create      Create VM (Virtual Machine)
   delete      Delete Selected VM
@@ -133,19 +134,24 @@ users:
   - name: root
     ssh_authorized_keys:
       - <pub_key>
-password: testtest
+
+user: cloud-user
 chpasswd:
   list: |
     root:testtest
+    cloud-user:testtest
   expire: False
 ssh_pwauth: True
-runcmd:
-  - sed '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
-  - growpart /dev/sda 1
-power_state:
-  mode: reboot
-  message: "Cloudinit finished"
 
+growpart:
+  mode: auto
+  devices: ["/"]
+  ignore_growroot_disabled: false
+
+runcmd:
+  - sed -i '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
+  - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  - reboot
 ```
 
 
@@ -158,10 +164,12 @@ power_state:
 VM 이름은 반드시 숫자 `2 ~ 254` 범위 내에서 지정해야 하며 해당 번호를 가진 `MAC`과 `IP`를 가지게 됩니다.
 
 
+Create Command는 많은 Option이 있으므로 help를 사전에 살펴보신 후 사용하시길 권장드립니다.
+
 
 2-1. 사전에 없는 Image로 VM을 생성하는 경우.
-아래와 같이 Image를 먼저 생성해야합니다. Image의 `base` 가 될 파일을 선택합니다
-이후 시간이 지나면 VM이 생성됩니다..
+VM을 생성할 때 없는 Image 이름을 지정하면 자동으로 Image를 생성하고자 합니다.
+Image의 `base` 가 될 파일을 선택하면 Image 및 VM을 동시에 생성할 수 있습니다.
 
 ```
 # virt-go create -i u20 -n 62
@@ -201,15 +209,15 @@ Network 		 Active
 =================================
 virt-go-net 		 true
 
-Images : c76 / c79 / c83 / u18-04 / u20 / 
+Images : u18 / u20 / 
 
-+-----+----------------+--------+----------------+-----------+
-| NUM |   DOMAINNAME   | STATUS |   IP-ADDRESS   | ROOT-SIZE |
-+-----+----------------+--------+----------------+-----------+
-|  90 | virt-go-u20-90 | Active | 192.168.123.90 | 40 GB     |
-|  91 | virt-go-u20-91 | Active | 192.168.123.91 | 40 GB     |
-|  92 | virt-go-u20-92 | Active | 192.168.123.92 | 40 GB     |
-+-----+----------------+--------+----------------+-----------+
++-----+-----------------+--------+--------------+-----------+-------------+
+| NUM |   DOMAINNAME    | STATUS |  IP-ADDRESS  | ROOT-SIZE | DESCRIPTION |
++-----+-----------------+--------+--------------+-----------+-------------+
+| 100 | virt-go-u20-100 | Active | 10.62.62.100 | 20 GB     |             |
+| 101 | virt-go-u18-101 | Active | 10.62.62.101 | 20 GB     |             |
+| 150 | virt-go-u20-150 | Active | 10.62.62.150 | 20 GB     | test server |
++-----+-----------------+--------+--------------+-----------+-------------+
 ```
 
 
@@ -232,29 +240,6 @@ virt-go-u20-62 shutdown!
 virt-go-u20-62 will be deleted!
 delete Finished
 ```
-
-
-확인
-
-```
-!!! This list only contain about 'virt-go' 
-
-Network 		 Active
-=================================
-virt-go-net 		 true
-
-Images : c76 / c79 / c83 / u18-04 / u20 / 
-
-+-----+----------------+--------+----------------+-----------+
-| NUM |   DOMAINNAME   | STATUS |   IP-ADDRESS   | ROOT-SIZE |
-+-----+----------------+--------+----------------+-----------+
-|  90 | virt-go-u20-90 | Active | 192.168.123.90 | 40 GB     |
-|  91 | virt-go-u20-91 | Active | 192.168.123.91 | 40 GB     |
-|  92 | virt-go-u20-92 | Active | 192.168.123.92 | 40 GB     |
-+-----+----------------+--------+----------------+-----------+
-```
-
-
 
 
 ### 운영

@@ -80,6 +80,10 @@ var deleteCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
+				err = os.Remove(Datadir + "/volumes/" + domName + "desc")
+				if err != nil {
+					panic(err)
+				}
 			}
 		}
 		// destroy
