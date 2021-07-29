@@ -173,8 +173,8 @@ func init() {
 	createCmd.MarkFlagRequired("image")
 	createCmd.Flags().IntVarP(&cpu, "cpu", "c", 2, "number of core")
 	createCmd.Flags().IntVarP(&mem, "mem", "m", 4, "size of memory (GB)")
-	createCmd.Flags().StringVarP(&userData, "user-data", "u", Datadir+"/cloudinit/user-data", "cloud-init user-data")
-	createCmd.Flags().StringVarP(&metaData, "meta-data", "d", Datadir+"/cloudinit/meta-data", "cloud-init meta-data")
+	createCmd.Flags().StringVarP(&userData, "user-data", "u", "<Datadir>/cloudinit/user-data", "cloud-init user-data")
+	createCmd.Flags().StringVarP(&metaData, "meta-data", "d", "<Datadir>/cloudinit/meta-data", "cloud-init meta-data")
 
 	// Here you will define your flags and configuration settings.
 
