@@ -198,6 +198,15 @@ Image의 `base` 가 될 파일을 선택하면 Image 및 VM을 동시에 생성�
 
 
 
+2-3 VM을 생성하지 않고 Image만 생성할 수도 있습니다.
+
+```
+# virt-go create -i u20
+```
+
+
+
+
 #### 3.생성한 Resource 정보 확인.
 
 
