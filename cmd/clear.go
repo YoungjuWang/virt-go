@@ -17,22 +17,52 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
+	"libvirt.org/libvirt-go"
 )
 
 // clearCmd represents the clear command
 var clearCmd = &cobra.Command{
 	Use:   "clear",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Delete virt-network and dir about virt-go. before run this command please delete VM first.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("clear called")
+
+		// Get Datadir and NetAddr
+		Datadir, NetAddr = GetCFG()
+
+		// Create libvirt Connection
+		conn, err := libvirt.NewConnect("qemu:///system")
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer conn.Close()
+
+		// Destroy virt-go-net and Undefine
+		nets, err := conn.ListAllNetworks(libvirt.CONNECT_LIST_NETWORKS_PERSISTENT)
+		if err != nil {
+			fmt.Println(err)
+		}
+		for _, net := range nets {
+			netName, _ := net.GetName()
+			if (strings.Contains(netName, "virt-go")) {
+				fmt.Println("Destroy virt-go-net")
+				if err := net.Destroy(); err != nil {panic(err)}
+
+				fmt.Println("Undefine virt-go-net")
+				if err := net.Undefine(); err != nil {panic(err)}
+			}
+			continue
+		}
+
+		// Delete Datadir
+		if err := os.RemoveAll(Datadir); err !=nil {fmt.Println(err)}
+
+		// Delete ConfigFile
+		if err := os.RemoveAll("/etc/virt-go/"); err !=nil {fmt.Println(err)}
+
 	},
 }
 
