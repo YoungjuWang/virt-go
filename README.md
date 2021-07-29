@@ -46,6 +46,17 @@ Install Manager Command
 ```
 
 
+(Option) Build virt-go from source
+
+
+golang 16.x 이상 version에서 진행하시기 바랍니다.
+```
+# cd "$(go env GOROOT)/src"
+# git clone https://github.com/YoungjuWang/virt-go.git
+# cd virt-go
+# go build -o /usr/local/bin/virt-go
+```
+
 
 ### 사용법
 
