@@ -254,7 +254,8 @@ Images : c76 / c79 / c83 / u18-04 / u20 /
 
 #### 서버 접속
 
-- Default ID / PW : root / testtest
+- Default Account ID / PW : cloud-user / testtest
+- Default Admin ID / PW : root / testtest
 
 `init` 과정에서 ssh-key를 수정했다면 `virt-go list` 로 확인되는 서버 IP로 ssh 접속하면 바로 접속이 돼야합니다.
 만약 수정하지 않았다면 재 수정 후 VM을 재 생성해보시기 바랍니다.
