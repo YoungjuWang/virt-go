@@ -323,3 +323,23 @@ Start VM
 # virt-go start -n 90
 virt-go-u20-90  is Started !
 ```
+
+
+
+#### Virt-go 삭제
+
+virt-go 삭제
+
+
+> VM은 사전에 삭제 해두시길 바랍니다. 삭제를 진행하지 않는 경우 Datadir은 삭제되지만 VM은 수동으로 undefine 해주어야 합니다.
+
+```
+# virt-go clear -h
+Delete virt-network and dir about virt-go. before run this command please delete VM first.
+
+Usage:
+  virt-go clear [flags]
+
+Flags:
+  -h, --help   help for clear
+```
