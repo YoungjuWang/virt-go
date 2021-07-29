@@ -82,7 +82,7 @@ user: cloud-user
 chpasswd:
   list: |
     root:testtest
-		cloud-user:testtest
+    cloud-user:testtest
   expire: False
 ssh_pwauth: True
 
