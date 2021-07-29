@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"io/ioutil"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"libvirt.org/libvirt-go"
@@ -61,7 +63,28 @@ var createCmd = &cobra.Command{
 		userData = Datadir + "/cloudinit/user-data"
 		metaData = Datadir + "/cloudinit/meta-data"
 
-		// about image
+		// Check number is used by other VM
+		files, err := ioutil.ReadDir(Datadir+"/volumes")
+		if err != nil {
+			panic(err)
+		}
+
+		tailCount := 0
+		for _,file := range files {
+			fName := file.Name()
+			fSplitName := strings.Split(fName, "-")
+			ftail := fSplitName[len(fSplitName)-1]
+			if strings.HasPrefix(ftail, strconv.Itoa(Num)) {
+				tailCount += 1
+			}
+		}
+
+		if tailCount > 0 {
+			fmt.Printf("%d is already used by other VM. Please use another one.\n", Num)
+			os.Exit(80)
+		}
+
+		// Check image exists and Generate VM volume
 		if _, err := os.Stat(Datadir + "/images/" + image); os.IsNotExist(err) {
 			//fmt.Println(Datadir + "/images/" + image)
 			fmt.Printf("'%s' is not exist. 'virt-go' attempd to create image via 'base' image file. \n Enter base image full path : ", image)
@@ -72,6 +95,7 @@ var createCmd = &cobra.Command{
 			domImage = GenDomDisk(image, Num)
 		}
 
+		// Set VM Hostname
 		mf, _ := os.Create(metaData)
 		mf.WriteString("local-hostname: " + "virt-go-" + image + "-" + strconv.Itoa(Num))
 		mf.Close()
