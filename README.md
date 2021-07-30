@@ -15,7 +15,7 @@
     + [Create Image for VM](#create-image-for-vm)
     + [Create VM](#create-vm)
       - [1) Create VM using Image already exists](#1--create-vm-using-image-already-exists)
-      - [2) Create VM using image doesn't exsit](#2--create-vm-using-image-doesn-t-exsit)
+      - [2) Create VM using image doesn't exist](#2--create-vm-using-image-doesn-t-exist)
       - [3) Create VM select number of cores / memory size](#3--create-vm-select-number-of-cores---memory-size)
       - [4) Create VM with description](#4--create-vm-with-description)
       - [5) Create VM with custom cloud-init file](#5--create-vm-with-custom-cloud-init-file)
@@ -252,7 +252,7 @@ Images : u20 /
 "virt-go-u20-200" is created!
 ```
 
-#### 2) Create VM using image doesn't exsit
+#### 2) Create VM using image doesn't exist
 
 ```bash
 # virt-go create -i u2004 -n 204
