@@ -47,10 +47,17 @@ var createCmd = &cobra.Command{
 
 		Datadir, NetAddr = GetCFG()
 
+		// Check Image name (Can not contain '-')
+		if strings.Contains(image, "-") {
+			fmt.Println("Image name can not contain '-' character")
+			os.Exit(6)
+		}
+
+		// Check Image exists
 		if Num == 0 {
 			if _, err := os.Stat(Datadir + "/images/" + image); os.IsNotExist(err) {
 				fmt.Println("Don't Create 'VM' Only Create Image")
-				fmt.Printf("'%s' is not exist. 'virt-go' attempd to create image via 'base' image file. \n Enter base image full path : ", image)
+				fmt.Printf("'%s' does not exist. 'virt-go' attempd to create image via 'base' image file. \n Enter base image full path : ", image)
 				fmt.Scanf("%s", &base)
 				GenImage(base, image)
 				os.Exit(0)
