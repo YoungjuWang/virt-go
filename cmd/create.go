@@ -82,9 +82,10 @@ var createCmd = &cobra.Command{
 			fName := file.Name()
 			fSplitName := strings.Split(fName, "-")
 			ftail := fSplitName[len(fSplitName)-1]
-			if strings.HasPrefix(ftail, strconv.Itoa(Num)) {
+			if ftail == strconv.Itoa(Num)+"root" {
 				tailCount += 1
 			}
+			fmt.Println(tailCount)
 		}
 
 		if tailCount > 0 {
