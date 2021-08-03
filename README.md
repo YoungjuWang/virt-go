@@ -188,6 +188,7 @@ Available Commands:
   init        Init 'virt-go' environment
   list        list
   resize      Resize VM root volum. If VM is started, It will be shutdown automatically
+  ssh         Connect to virt-go VM via ssh
   start       Start virt-go VM
   stop        Stop 'virt-go' VM
 
@@ -408,10 +409,7 @@ virsh 명령을 사용하여 VM이름으로 접속합니다.
 별도의 Migration 및 중지 없이 Update 가능합니다.
 
 ```
-# rm virt-go
-# wget https://github.com/YoungjuWang/virt-go/raw/master/virt-go/virt-go
-# chmod +x virt-go
-# mv -f virt-go /usr/local/bin/
+# curl https://raw.githubusercontent.com/YoungjuWang/virt-go/master/scripts/update-virt-go.sh |sh -
 ```
 
 #### Resize Root Volume
