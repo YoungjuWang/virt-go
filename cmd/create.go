@@ -85,7 +85,6 @@ var createCmd = &cobra.Command{
 			if ftail == strconv.Itoa(Num)+"root" {
 				tailCount += 1
 			}
-			fmt.Println(tailCount)
 		}
 
 		if tailCount > 0 {
