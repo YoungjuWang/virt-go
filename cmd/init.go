@@ -94,7 +94,12 @@ growpart:
 runcmd:
   - sed -i '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
   - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-  - reboot`
+
+power_state:
+  mode: reboot
+  message: cloud-init finished
+  timeout: 30
+  condition: True`
 		userDataFile.WriteString(userData)
 
 		metaDataFile, err := os.Create(Datadir + "/cloudinit/meta-data")
