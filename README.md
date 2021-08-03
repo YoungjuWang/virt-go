@@ -391,10 +391,7 @@ delete Finished
 만약 수정하지 않았다면 재 수정 후 VM을 재 생성해보시기 바랍니다.
 
 ```
-# ssh 192.168.123.63
-The authenticity of host '192.168.123.63 (192.168.123.63)' can't be established.
-ECDSA key fingerprint is SHA256:Z/sptVgUPGNaJXWgp4I4sGtChwg3FM4DAQLRCBXDb0Y.
-Are you sure you want to continue connecting (yes/no/[fingerprint])?  yes
+# virt-go ssh -n 63
 ```
 
 ####  Connect to VM console
