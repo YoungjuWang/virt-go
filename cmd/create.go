@@ -98,9 +98,9 @@ var createCmd = &cobra.Command{
 			fmt.Printf("'%s' is not exist. 'virt-go' attempd to create image via 'base' image file. \n Enter base image full path : ", image)
 			fmt.Scanf("%s", &base)
 			GenImage(base, image)
-			domImage = GenDomDisk(image, Num)
+			domImage = GenDomDisk(image, Num, size)
 		} else {
-			domImage = GenDomDisk(image, Num)
+			domImage = GenDomDisk(image, Num, size)
 		}
 
 		// Set VM Hostname
@@ -187,6 +187,7 @@ func init() {
 	createCmd.MarkFlagRequired("image")
 	createCmd.Flags().IntVarP(&cpu, "cpu", "c", 2, "number of core")
 	createCmd.Flags().IntVarP(&mem, "mem", "m", 4, "size of memory (GB)")
+	createCmd.Flags().IntVarP(&size, "size", "s", 20, "Number of VM Root Volume Size (GB)")
 	createCmd.Flags().StringVarP(&desc, "desc", "d", "", "Description")
 	createCmd.Flags().StringVarP(&userData, "user-data", "u", "<Datadir>/cloudinit/user-data", "cloud-init user-data")
 	createCmd.Flags().StringVarP(&metaData, "meta-data", "t", "<Datadir>/cloudinit/meta-data", "cloud-init meta-data")

@@ -10,7 +10,7 @@ import (
 	"github.com/cheggaaa/pb/v3"
 )
 
-func GenDomDisk(image string, Num int) (output string) {
+func GenDomDisk(image string, Num int, size int) (output string) {
 	output = Datadir + "/volumes/virt-go-" + image + "-" + strconv.Itoa(Num) + "root"
 
 	in, err := os.Open(Datadir + "/images/" + image)
@@ -47,7 +47,7 @@ func GenDomDisk(image string, Num int) (output string) {
 		fmt.Println("Syn err", err)
 	}
 
-	cmd := exec.Command("qemu-img", "resize", output, "20G")
+	cmd := exec.Command("qemu-img", "resize", output, strconv.Itoa(size)+"G")
 
 	if err = cmd.Run(); err != nil {
 		fmt.Println(err)
