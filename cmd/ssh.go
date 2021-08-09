@@ -27,10 +27,7 @@ var sshCmd = &cobra.Command{
     scmd.Stdout = os.Stdout
     scmd.Stderr = os.Stderr
 
-		err := scmd.Run()
-		if err != nil {
-		panic(err)
-		}
+		_ = scmd.Run()
 	},
 }
 
