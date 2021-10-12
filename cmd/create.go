@@ -18,6 +18,7 @@ import (
 )
 
 func createVM() {
+	v.checkImageName()
 	checked := v.checkNumber()
 	if checked {
 		fmt.Println("Create image only.")
@@ -29,6 +30,7 @@ func createVM() {
 		}
 		os.Exit(0)
 	}
+
 	checkVMExists()
 	v.name = "virt-go-" + v.image + "-" + strconv.Itoa(int(v.num))
 	volFile := createVolume() // =createImage() also.
@@ -286,7 +288,7 @@ func init() {
 
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Create VM or Image.",
+	Short: "Create VM or Image",
 	Run: func(cmd *cobra.Command, args []string) {
 		createVM()
 	},

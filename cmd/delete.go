@@ -9,10 +9,9 @@ import (
 	libvirt "libvirt.org/libvirt-go"
 )
 
-// deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "Delete VM or Image.",
+	Short: "Delete VM or Image",
 	Run: func(cmd *cobra.Command, args []string) {
 		if v.num == 0 && v.image == "" {
 			cmd.Help()

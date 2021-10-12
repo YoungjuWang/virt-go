@@ -26,10 +26,16 @@ func (v *vmConfig) checkNumber() bool {
 	if v.num == 0 {
 		return true
 	} else if v.num < 2 || v.num > 254 {
-		log.Fatal("Invaild number. 1 < num < 255")
+		log.Fatal("Invalid number. 1 < num < 255")
 		return false
 	}
 	return false
+}
+
+func (v *vmConfig) checkImageName() {
+	if strings.Contains(v.image, "-") {
+		log.Fatal("Invalid image name. It can not contain '-'")
+	}
 }
 
 func (v *vmConfig) getRunningVMName(conn *libvirt.Connect) string {
@@ -42,9 +48,10 @@ func (v *vmConfig) getRunningVMName(conn *libvirt.Connect) string {
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		if strings.HasSuffix(domName, strconv.Itoa(int(v.num))) {
-			return domName
+		if strings.Contains(domName, "virt-go") {
+			if strings.HasSuffix(domName, strconv.Itoa(int(v.num))) {
+				return domName
+			}
 		}
 	}
 	log.Fatal("There is no server has " + strconv.Itoa(int(v.num)))
