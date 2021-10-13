@@ -40,7 +40,9 @@ var listCmd = &cobra.Command{
 			return domInfoList[i].num < domInfoList[j].num
 		})
 
-		printTable(domInfoList)
+		printOtherTable(conn)
+		fmt.Println("\n")
+		printDomTable(domInfoList)
 	},
 }
 
@@ -75,7 +77,7 @@ func getLists(conn *libvirt.Connect) []domInfo {
 			if err != nil {
 				log.Print(err)
 			}
-			description := string(descriptionB)
+			description := strings.TrimSuffix(string(descriptionB), "\n")
 			tailU, err := strconv.ParseUint(tail, 10, 32)
 			if err != nil {
 				log.Fatal(err)
@@ -92,11 +94,7 @@ func getLists(conn *libvirt.Connect) []domInfo {
 	return domInfoList
 }
 
-func printImages() {
-	fmt.Println("Image")
-}
-
-func printTable(domInfoList []domInfo) {
+func printDomTable(domInfoList []domInfo) {
 	var data [][]string
 	for i := 0; i < len(domInfoList); i++ {
 		data = append(data, []string{strconv.Itoa(int(domInfoList[i].num)), domInfoList[i].name, domInfoList[i].addr, domInfoList[i].size, domInfoList[i].desc})
@@ -105,17 +103,61 @@ func printTable(domInfoList []domInfo) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Number", "Name", "IP", "Size", "Description"})
 	table.SetHeaderColor(tablewriter.Colors{tablewriter.Bold}, tablewriter.Colors{tablewriter.Bold}, tablewriter.Colors{tablewriter.Bold}, tablewriter.Colors{tablewriter.Bold}, tablewriter.Colors{tablewriter.Bold})
-	table.SetAutoWrapText(false)
-	table.SetAutoFormatHeaders(true)
+	//table.SetAutoFormatHeaders(true)
 	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
 	table.SetCenterSeparator("")
 	table.SetColumnSeparator("")
-	table.SetRowSeparator("")
-	table.SetHeaderLine(false)
-	table.SetBorder(false)
-	table.SetTablePadding("\t") // pad with tabs
-	table.SetNoWhiteSpace(true)
+	//table.SetRowSeparator("")
+	//table.SetHeaderLine(false)
+	table.AppendBulk(data)
+	table.Render()
+}
+
+func printOtherTable(conn *libvirt.Connect) {
+	net, err := conn.LookupNetworkByName("virt-go-net")
+	if err != nil {
+		log.Fatal(err)
+	}
+	netName, err := net.GetName()
+	if err != nil {
+		log.Fatal(err)
+	}
+	netStat, err := net.IsActive()
+	if err != nil {
+		log.Fatal(err)
+	}
+	netAddr := g.netAddr + ".xxx"
+	if netStat {
+		netAddr = colorGreen + netAddr + colorReset
+	} else {
+		netAddr = colorRed + netAddr + colorReset
+	}
+	imagesB, err := os.ReadDir(g.dataDir + "/images")
+	if err != nil {
+		log.Fatal(err)
+	}
+	var imagesS string
+	for _, image := range imagesB {
+		imagesS += image.Name() + "  "
+	}
+
+	data := [][]string{
+		[]string{"Data-Dir", g.dataDir},
+		[]string{netName, netAddr},
+		[]string{"Images", imagesS},
+	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Resource", "State"})
+	table.SetHeaderColor(tablewriter.Colors{tablewriter.Bold}, tablewriter.Colors{tablewriter.Bold})
+	//table.SetAutoFormatHeaders(true)
+	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetCenterSeparator("")
+	table.SetColumnSeparator("")
+	//table.SetRowSeparator("")
+	//table.SetHeaderLine(false)
 	table.AppendBulk(data)
 	table.Render()
 }
