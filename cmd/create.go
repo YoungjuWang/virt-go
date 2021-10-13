@@ -244,6 +244,11 @@ func createCloudInitISO() string {
 		log.Fatal("'genisoimage' command doesn't exist.Please install the command before.")
 	}
 
+	// Set VM Hostname
+	metaFile, _ := os.Create(v.metaData)
+	metaFile.WriteString("local-hostname: " + v.name)
+	metaFile.Close()
+
 	// genisoimage -output cloudInitIso.iso -volid cidata -joliet -rock user-data meta-data
 	cmd := exec.Command("genisoimage", "-output", cloudInitIso, "-volid", "cidata", "-joliet", "-rock", v.userData, v.metaData)
 	if err := cmd.Run(); err != nil {
