@@ -51,11 +51,20 @@ func deleteVM() {
 		log.Fatal(err)
 	}
 
-	// Destroy.
-	fmt.Printf("■  %s will shutdown.\n", domName)
-	err = dom.Destroy()
+	domStat, err := dom.IsActive()
 	if err != nil {
-		log.Fatal("System Already Shutdown")
+		log.Fatal(err)
+	}
+
+	if domStat {
+		// Destroy.
+		fmt.Printf("■  %s will shutdown.\n", domName)
+		err = dom.Destroy()
+		if err != nil {
+			log.Fatal("err")
+		}
+	} else {
+		fmt.Println("System Already Shutdown")
 	}
 
 	// Undefine.
@@ -98,6 +107,6 @@ func deleteImage() {
 
 func init() {
 	rootCmd.AddCommand(deleteCmd)
-	deleteCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be deleted.")
+	deleteCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be deleted")
 	deleteCmd.Flags().StringVarP(&v.image, "image", "i", "", "Image, will be deleted")
 }

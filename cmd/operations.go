@@ -41,11 +41,11 @@ func init() {
 	rootCmd.AddCommand(startCmd)
 	rootCmd.AddCommand(stopCmd)
 	rootCmd.AddCommand(restartCmd)
-	startCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be started.")
+	startCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be started")
 	startCmd.MarkFlagRequired("number")
-	stopCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be stopped.")
+	stopCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be stopped")
 	stopCmd.MarkFlagRequired("number")
-	restartCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be restarted.")
+	restartCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "VM having the number will be restarted")
 	restartCmd.MarkFlagRequired("number")
 }
 

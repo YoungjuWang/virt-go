@@ -274,14 +274,13 @@ func init() {
 	createCmd.Flags().SortFlags = false
 
 	// Flags
-	createCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "Number, VM will use.")
-	createCmd.Flags().StringVarP(&v.image, "image", "i", "", "Image, VM will use. (required)")
+	createCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "Number, VM will use")
+	createCmd.Flags().StringVarP(&v.image, "image", "i", "", "Image, VM will use (required)")
 	createCmd.MarkFlagRequired("image")
 	createCmd.Flags().StringVarP(&v.desc, "desc", "d", "", "Description")
 	createCmd.Flags().UintVarP(&v.cpu, "cpu", "c", 2, "number of core")
 	createCmd.Flags().UintVarP(&v.mem, "mem", "m", 4, "size of memory (GB)")
-	createCmd.Flags().UintVarP(&v.size, "size", "s", 20, "VM's Root Volume Size (GB).")
-	createCmd.Flags().StringVar(&v.bridge, "bridge", "", "Bridge Interface")
+	createCmd.Flags().UintVarP(&v.size, "size", "s", 20, "VM's Root Volume Size (GB)")
 	createCmd.Flags().StringVar(&v.userData, "user-data", g.dataDir+"/cloudinit/user-data", "cloud-init user-data")
 	createCmd.Flags().StringVar(&v.metaData, "meta-data", g.dataDir+"/cloudinit/meta-data", "cloud-init meta-data")
 }
