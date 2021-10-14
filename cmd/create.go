@@ -286,8 +286,8 @@ func init() {
 	createCmd.Flags().UintVarP(&v.cpu, "cpu", "c", 2, "number of core")
 	createCmd.Flags().UintVarP(&v.mem, "mem", "m", 4, "size of memory (GB)")
 	createCmd.Flags().UintVarP(&v.size, "size", "s", 20, "VM's Root Volume Size (GB)")
-	createCmd.Flags().StringVar(&v.userData, "user-data", g.dataDir+"/cloudinit/user-data", "cloud-init user-data")
-	createCmd.Flags().StringVar(&v.metaData, "meta-data", g.dataDir+"/cloudinit/meta-data", "cloud-init meta-data")
+	createCmd.Flags().StringVar(&v.userData, "user-data", g.dataDir+"/cloud-init/user-data", "cloud-init user-data")
+	createCmd.Flags().StringVar(&v.metaData, "meta-data", g.dataDir+"/cloud-init/meta-data", "cloud-init meta-data")
 }
 
 var createCmd = &cobra.Command{

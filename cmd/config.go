@@ -17,7 +17,6 @@ type vmConfig struct {
 	cpu      uint
 	mem      uint
 	size     uint
-	bridge   string
 	userData string
 	metaData string
 }
@@ -65,13 +64,16 @@ type globalConfig struct {
 
 func (g *globalConfig) getCfg() {
 	cfgTextB, err := os.ReadFile("/etc/virt-go/virt-go.cfg")
-
 	if err != nil {
 		log.Fatal(err)
 	}
 	splitCfgText := strings.Split(string(cfgTextB), "\n")
-	g.dataDir = strings.TrimLeft(splitCfgText[0], "Datadir=")
-	g.netAddr = strings.TrimLeft(splitCfgText[1], "NetAddr=")
+	datadir := strings.TrimLeft(splitCfgText[0], "dataDir=")
+	netaddr := strings.TrimLeft(splitCfgText[1], "netAddr=")
+
+	g.dataDir = strings.TrimRight(datadir, "/")
+	netaddrS := strings.Split(netaddr, ".")
+	g.netAddr = strings.Join(netaddrS[:3], ".")
 }
 
 var v vmConfig

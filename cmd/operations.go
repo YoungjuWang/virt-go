@@ -10,8 +10,8 @@ import (
 )
 
 func startVM(conn *libvirt.Connect) {
-	domName := v.getRunningVMName(conn)
-	dom, err := conn.LookupDomainByName(domName)
+	v.name = v.getRunningVMName(conn)
+	dom, err := conn.LookupDomainByName(v.name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,12 +20,12 @@ func startVM(conn *libvirt.Connect) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(colorGreen + "Start " + domName + colorReset)
+	fmt.Println(colorGreen + "Start " + v.name + colorReset)
 }
 
 func stopVM(conn *libvirt.Connect) {
-	domName := v.getRunningVMName(conn)
-	dom, err := conn.LookupDomainByName(domName)
+	v.name = v.getRunningVMName(conn)
+	dom, err := conn.LookupDomainByName(v.name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func stopVM(conn *libvirt.Connect) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(colorRed + "Stop " + domName + colorReset)
+	fmt.Println(colorRed + "Stop " + v.name + colorReset)
 }
 
 func init() {
