@@ -15,7 +15,7 @@ then
 fi
 
 echo "Input virt-go data directory"
-echo -n "ex) /etc/virt-go : "
+echo -n "ex) /data/virt-go : "
 read dataDir
 echo ""
 

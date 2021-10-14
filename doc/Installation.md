@@ -16,6 +16,13 @@ Resolving deltas: 100% (224/224), done.
 install golang >= 1.17
 https://golang.org/doc/install
 
+설치된 go version을 확인합니다.
+
+```
+[root@virt-go-server ~]# go version
+go version go1.17.2 linux/amd64
+```
+
 ### 내려 받은 virt-go project directory로 이동합니다.
 
 ```
@@ -51,7 +58,7 @@ exit status 1
 ```
 [root@virt-go-server virt-go]# bash sh/install.sh 
 Input virt-go data directory
-ex) /etc/virt-go : /etc/virt-go
+ex) /data/virt-go : /data/virt-go
 
 Input virt-go network address
 ex) 10.62.62.0 : 10.62.62.0
@@ -70,12 +77,15 @@ ssh_authorized_keys:
 ### 배포된 환경을 확인합니다.
 
 ```
-[root@virt-go-server virt-go]# ls -l /etc/virt-go
+[root@virt-go-server ~]# ls -l /etc/virt-go/
 total 4
-drwxr-xr-x. 2 root root 40 Oct 14 10:14 cloud-init
-drwxr-xr-x. 2 root root  6 Oct 14 10:14 images
--rw-r--r--. 1 root root 40 Oct 14 10:17 virt-go.cfg
-drwxr-xr-x. 2 root root  6 Oct 14 10:14 volumes
+-rw-r--r--. 1 root root 41 Oct 14 14:29 virt-go.cfg
+
+[root@virt-go-server ~]# ls -l /data/virt-go/
+total 0
+drwxr-xr-x. 2 root root 40 Oct 14 14:29 cloud-init
+drwxr-xr-x. 2 root root  6 Oct 14 14:29 images
+drwxr-xr-x. 2 root root  6 Oct 14 14:29 volumes
 
 [root@virt-go-server virt-go]# cat /etc/virt-go/virt-go.cfg 
 dataDir=/etc/virt-go
@@ -94,7 +104,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoMfjixSZyW5g3Z6EomG3jAsoaJlJfGBYSCC5z96YZ
 ### cloud-init user-data 내용을 수정합니다. 
 
 ```
-[root@virt-go-server virt-go]# sed -i 's,- <pub-key>,- '"$(cat ~/.ssh/id_rsa.pub)"',g' /etc/virt-go/cloud-init/user-data 
+[root@virt-go-server virt-go]# sed -i 's,- <pub-key>,- '"$(cat ~/.ssh/id_rsa.pub)"',g' /data/virt-go/cloud-init/user-data 
 ```
 
 
