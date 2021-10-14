@@ -25,6 +25,7 @@ func createVM() {
 		imageFile := g.dataDir + "/images/" + v.image
 		if _, err := os.Stat(imageFile); os.IsNotExist(err) {
 			createImage(imageFile)
+			fmt.Println("")
 		} else {
 			log.Fatal(imageFile + " already exists.")
 		}
