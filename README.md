@@ -11,8 +11,6 @@ https://yjwang.tistory.com/147
 
 ## Requirements
 
----
-
 아래 항목들이 사전에 설치 및 실행되고 있어야합니다.
 
 - 'libvirtd' service
@@ -21,8 +19,6 @@ https://yjwang.tistory.com/147
 - 'libvirt-lib' package 
 
 ## Index
-
----
 
 아래 가이드를 참고하시어 사용하시기 바랍니다.
 
@@ -36,8 +32,6 @@ https://yjwang.tistory.com/147
 **!! Clear시 VM에서 사용한 `Volume` 과 `VM` 은 수동으로 삭제해야합니다.**
 
 ## Release note
-
----
 
 ```
 - 소스를 객체지향 형식으로 정리했습니다.
