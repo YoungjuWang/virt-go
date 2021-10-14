@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/YoungjuWang/virt-go)](https://goreportcard.com/report/github.com/YoungjuWang/virt-go)
+
 # virt-go
 
 <p align="center">
