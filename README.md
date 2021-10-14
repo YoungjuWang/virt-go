@@ -1,6 +1,8 @@
 # virt-go
 
-<center>![](https://github.com/YoungjuWang/virt-go/blob/v2/img/virt-go2.png)</center>
+<p align="center">
+  <img src="https://github.com/YoungjuWang/virt-go/blob/v2/img/virt-go2.png">
+</p>
 
 'virt-go' 는 libvirt 환경에서 VM을 편리하게 관리하기 위한 프로그램으로 cloud image와 cloud-init을 이용해서 빠르게 VM 관리할 수 있도록 돕습니다.
 
