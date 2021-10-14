@@ -143,9 +143,9 @@ func printOtherTable(conn *libvirt.Connect) {
 	}
 
 	data := [][]string{
-		[]string{"Data-Dir", g.dataDir},
-		[]string{netName, netAddr},
-		[]string{"Images", imagesS},
+		{"Data-Dir", g.dataDir},
+		{netName, netAddr},
+		{"Images", imagesS},
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
