@@ -58,7 +58,7 @@ func deleteVM() {
 
 	if domStat {
 		// Destroy.
-		fmt.Printf("■  %s will shutdown.\n", domName)
+		fmt.Printf("■  Shutdown %s.\n", domName)
 		err = dom.Destroy()
 		if err != nil {
 			log.Fatal("err")
@@ -68,28 +68,28 @@ func deleteVM() {
 	}
 
 	// Undefine.
-	fmt.Printf("■  %s will be undefined.\n", domName)
+	fmt.Printf("■  Undefine %s.\n", domName)
 	err = dom.Undefine()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Delete root volume.
-	fmt.Printf("■  %s volume will be deleted.\n", domName)
+	fmt.Printf("■  Delete %s volume.\n", domName)
 	err = os.Remove(g.dataDir + "/volumes/" + domName + "-root.qcow2")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Delete cloud-init ISO file.
-	fmt.Printf("■  %s cloud-init iso file will be deleted.\n", domName)
+	fmt.Printf("■  Delete %s cloud-init iso file.\n", domName)
 	err = os.Remove(g.dataDir + "/volumes/" + domName + "-init.iso")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Delete description file.
-	fmt.Printf("■  %s description file will be deleted.\n", domName)
+	fmt.Printf("■  Delete %s description file.\n", domName)
 	err = os.Remove(g.dataDir + "/volumes/" + domName)
 	if err != nil {
 		log.Fatal(err)
@@ -98,7 +98,7 @@ func deleteVM() {
 
 func deleteImage() {
 	// Delete Image.
-	fmt.Printf("■  %s will be deleted.\n", v.image)
+	fmt.Printf("■  Delete %s.\n", v.image)
 	err := os.Remove(g.dataDir + "/images/" + v.image)
 	if err != nil {
 		log.Fatal(err)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"virt-go2/cmd"
+	"virt-go/cmd"
 )
 
 func main() {

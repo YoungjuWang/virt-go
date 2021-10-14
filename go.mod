@@ -1,4 +1,4 @@
-module virt-go2
+module virt-go
 
 go 1.17
 
