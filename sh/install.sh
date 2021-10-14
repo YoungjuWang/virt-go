@@ -34,4 +34,10 @@ mkdir -p $dataDir/volumes
 mkdir -p $dataDir/images
 mkdir -p $dataDir/cloud-init
 
+curl https://raw.githubusercontent.com/YoungjuWang/virt-go/v2/cloud-init/user-data -o $dataDir/cloud-init/user-data
+curl https://raw.githubusercontent.com/YoungjuWang/virt-go/v2/cloud-init/meta-data -o $dataDir/cloud-init/meta-data
 
+echo "Please change value below in 'user-data' file for login to virt-go server without password."
+echo "ssh_authorized_keys:
+	>>	  - <pub-key>"
+echo ""
