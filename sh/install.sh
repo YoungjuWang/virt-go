@@ -2,7 +2,7 @@
 
 user=$(whoami)
 
-if [ user != root ]
+if [ $user != "root" ]
 then
     echo "Please run 'install.sh' as root account."
     exit 1
