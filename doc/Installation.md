@@ -1,7 +1,7 @@
 ### git에서 virt-go project를 내려받습니다.
 
 ```
-[root@cloud-test-5 ~]# git clone https://github.com/YoungjuWang/virt-go.git
+[root@virt-go-server ~]# git clone https://github.com/YoungjuWang/virt-go.git
 Cloning into 'virt-go'...
 remote: Enumerating objects: 403, done.
 remote: Counting objects: 100% (120/120), done.
@@ -19,13 +19,13 @@ https://golang.org/doc/install
 ### 내려 받은 virt-go project directory로 이동합니다.
 
 ```
-[root@cloud-test-5 ~]# cd virt-go/
+[root@virt-go-server ~]# cd virt-go/
 ```
 
 ### virt-go에 필요한 module 들을 내려받습니다.
 
 ```
-[root@cloud-test-5 virt-go]# go mod tidy
+[root@virt-go-server virt-go]# go mod tidy
 go: downloading github.com/inconshreveable/mousetrap v1.0.0
 go: downloading github.com/stretchr/testify v1.7.0
 go: downloading gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
@@ -39,7 +39,7 @@ go: downloading github.com/pmezard/go-difflib v1.0.0
 아래 메시지를 확인합니다. 동일한 메시지가 나오면 설치될 준비가 끝났음을 알 수 있으며 에러 메시지는 무시하시기 바랍니다.
 
 ```
-[root@cloud-test-5 virt-go]# go run main.go 
+[root@virt-go-server virt-go]# go run main.go 
 2021/10/14 10:08:31 open /etc/virt-go/virt-go.cfg: no such file or directory
 exit status 1
 ```
@@ -49,7 +49,7 @@ exit status 1
 `install.sh` 파일을 실행하여 `virt-go` 에 필요한 폴더 및 파일과 `virt-go.cfg` 파일을 생성합니다.
 
 ```
-[root@cloud-test-5 virt-go]# bash sh/install.sh 
+[root@virt-go-server virt-go]# bash sh/install.sh 
 Input virt-go data directory
 ex) /etc/virt-go : /etc/virt-go
 
@@ -70,14 +70,14 @@ ssh_authorized_keys:
 ### 배포된 환경을 확인합니다.
 
 ```
-[root@cloud-test-5 virt-go]# ls -l /etc/virt-go
+[root@virt-go-server virt-go]# ls -l /etc/virt-go
 total 4
 drwxr-xr-x. 2 root root 40 Oct 14 10:14 cloud-init
 drwxr-xr-x. 2 root root  6 Oct 14 10:14 images
 -rw-r--r--. 1 root root 40 Oct 14 10:17 virt-go.cfg
 drwxr-xr-x. 2 root root  6 Oct 14 10:14 volumes
 
-[root@cloud-test-5 virt-go]# cat /etc/virt-go/virt-go.cfg 
+[root@virt-go-server virt-go]# cat /etc/virt-go/virt-go.cfg 
 dataDir=/etc/virt-go
 netAddr=10.62.62.0
 ```
@@ -87,21 +87,21 @@ netAddr=10.62.62.0
 key 인증을 통해 virt-go vm에 password 없이 접근하기 위하여 ssh public key를 준비합니다.
 
 ```
-[root@cloud-test-5 virt-go]# cat ~/.ssh/id_rsa.pub 
+[root@virt-go-server virt-go]# cat ~/.ssh/id_rsa.pub 
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoMfjixSZyW5g3Z6EomG3jAsoaJlJfGBYSCC5z96YZZqVTcv2SggJnnLCSqVM00/jpLHs5cHbR74jkJaLDBT3TDKVN/ovqXk4V0eoewaDiQ0p1cmCLsmeVGt8lg2kR1PCjqMLtYFPjU9j+DfD1vIYxqzo1uQJIuOZ/1g2IdkRA63lDIZKhXr4Pr1oIhIgnvTM2Ep4imYCYKZ+kxpfF+inCoG8kjUGDg/+kUWEFXvgOF1/IAi/kvIMICLeM5wYnU68AjUi0SMgtaQN1tjIluo/S3/1OqTpWmY0jnVZ+shFTZIhgVmT9fHdJHnaCOAdTwl9SQrrALlYG8DoT+ZVVFIEeAUJH6(생략)
 ```
 
 ### cloud-init user-data 내용을 수정합니다. 
 
 ```
-[root@cloud-test-5 virt-go]# sed 's,- <pub-key>,- '"$(cat ~/.ssh/id_rsa.pub)"',g' /etc/virt-go/cloud-init/user-data 
+[root@virt-go-server virt-go]# sed -i 's,- <pub-key>,- '"$(cat ~/.ssh/id_rsa.pub)"',g' /etc/virt-go/cloud-init/user-data 
 ```
 
 
 ### virt-go command를 생성합니다.
 
 ```
-[root@cloud-test-5 virt-go]# go build -o /usr/local/bin/virt-go
+[root@virt-go-server virt-go]# go build -o /usr/local/bin/virt-go
 ```
 
 ### virt-go command를 실행합니다.
@@ -109,7 +109,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoMfjixSZyW5g3Z6EomG3jAsoaJlJfGBYSCC5z96YZ
 아래 help를 진행했을 때 에러 없이 실행 돼야 정상입니다.
 
 ```
-[root@cloud-test-5 virt-go]# virt-go --help
+[root@virt-go-server virt-go]# virt-go --help
 
 'virt-go' help user using libvirt to manage virtual resources easy and fast.
 Futher informations about 'virt-go' are in https://github.com/YoungjuWang/virt-go.
@@ -140,7 +140,7 @@ Use "virt-go [command] --help" for more information about a command.
 ### virt-go network를 생성합니다.
 
 ```
-[root@cloud-test-5 virt-go]# virt-go init
+[root@virt-go-server virt-go]# virt-go init
 ■  Create network XML file.
 ■  Set 'virt-go-net' to autostart.
 ■  Start 'virt-go-net'.
@@ -151,7 +151,7 @@ Use "virt-go [command] --help" for more information about a command.
 `virt-go-net` 의 STATE IP주소가 녹색으로 표시돼야 정상입니다.
 
 ```
-[root@cloud-test-5 virt-go]# virt-go list
+[root@virt-go-server virt-go]# virt-go list
 ---------------------------
  RESOURCE     STATE        
 ---------------------------
