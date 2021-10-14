@@ -40,8 +40,6 @@ var clearCmd = &cobra.Command{
 		if err := os.RemoveAll("/etc/virt-go/"); err != nil {
 			log.Fatal(err)
 		}
-
-		fmt.Printf("'VM' and '%s' must be deleted manually.", g.dataDir)
 	},
 }
 
