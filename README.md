@@ -30,7 +30,7 @@ https://yjwang.tistory.com/147
 - [Operations - VM 실행, 중지, 재시작](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Operations.md)
 - [Clear - virt-go 환경 삭제](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Clear.md)
 
-**!! Clear시 VM에서 사용한 `Volume`과 'VM'은 수동으로 삭제해야합니다.**
+**!! Clear시 VM에서 사용한 `Volume` 과 `VM` 은 수동으로 삭제해야합니다.**
 
 ### Release note
 
