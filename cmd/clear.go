@@ -9,8 +9,6 @@ import (
 	libvirt "libvirt.org/libvirt-go"
 )
 
-var reallyMean bool
-
 var clearCmd = &cobra.Command{
 	Use:   "clear",
 	Short: "Delete virt-go",
