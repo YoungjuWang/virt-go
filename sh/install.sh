@@ -19,13 +19,13 @@ echo -n "ex) /etc/virt-go : "
 read dataDir
 echo ""
 
-echo "Input virt-go network address : "
+echo "Input virt-go network address"
 echo -n "ex) 10.62.62.0 : "
 read netAddr
 echo ""
 
 mkdir -p /etc/virt-go
-echo << EOF >> /etc/virt-go/virt-go.cfg
+cat << EOF >> /etc/virt-go/virt-go.cfg
 dataDir=$dataDir
 netAddr=$netAddr
 EOF
