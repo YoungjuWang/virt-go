@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 	Use: "virt-go",
 	Long: `
 'virt-go' help user using libvirt to manage virtual resources easy and fast.
-Futher informations about 'virt-go' are in https://github.com/YoungjuWang/virt-go.
+Further informations about 'virt-go' are in https://github.com/YoungjuWang/virt-go.
 Have a good day. :)
 `,
 }
