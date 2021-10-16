@@ -32,14 +32,14 @@ Start virt-go-u20-20
 VM Size를 변경하기 위해서는 먼저 VM을 중지해야합니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go stop -n 20
+[root@virt-go-server ~]# virt-go stop -n 20
 Stop virt-go-u20-20
 ```
 
 현재 `20` 번 VM의 Size를 확인합니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go list 
+[root@virt-go-server ~]# virt-go list 
 -----------------------------
  RESOURCE     STATE          
 -----------------------------
@@ -59,7 +59,7 @@ Stop virt-go-u20-20
 `20`번 VM의 Size를 `20GB` 에서 `50GB` 로 변경하겠습니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go resize -n 20 -s 50
+[root@virt-go-server ~]# virt-go resize -n 20 -s 50
 resize /data/virt-go/volumes/virt-go-u20-20-root.qcow2
 Image resized.
 /data/virt-go/volumes/virt-go-u20-20-root.qcow2 size is 50G
@@ -68,7 +68,7 @@ Image resized.
 변경된 Size를 확인합니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go list 
+[root@virt-go-server ~]# virt-go list 
 -----------------------------
  RESOURCE     STATE          
 -----------------------------
@@ -88,7 +88,7 @@ Image resized.
 VM을 실행하여 적용 여부를 확인합니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go start -n 20
+[root@virt-go-server ~]# virt-go start -n 20
 Start virt-go-u20-20
 ```
 
@@ -96,7 +96,7 @@ Start virt-go-u20-20
 `50GB` 로 용량이 증가했음을 볼 수 있습니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go ssh -n 20
+[root@virt-go-server ~]# virt-go ssh -n 20
 
 root@virt-go-u20-20:~# df -h /
 Filesystem      Size  Used Avail Use% Mounted on
@@ -115,7 +115,7 @@ VM 중지 > Size 변경 > VM 시작
 `--shrink` option을 추가하여 Size를 `50GB` 에서 `30GB` 로 변경합니다.
 
 ```
-[root@cloud-test-5 ~]# virt-go resize -n 20 -s 30 --shrink
+[root@virt-go-server ~]# virt-go resize -n 20 -s 30 --shrink
 resize /data/virt-go/volumes/virt-go-u20-20-root.qcow2
 Image resized.
 /data/virt-go/volumes/virt-go-u20-20-root.qcow2 size is 30G
