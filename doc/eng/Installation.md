@@ -176,3 +176,10 @@ It is normal when the STATE IP address of `virt-go-net` is displayed in green.
 -------------------------------------
 -------------------
 ```
+
+### Set autocompletion of virt-go command.
+
+```
+[root@virt-go-server ~]# virt-go completion bash > /etc/bash_completion.d/virt-go
+[root@virt-go-server ~]# . /etc/bash_completion.d/virt-go 
+```

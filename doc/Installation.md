@@ -176,3 +176,10 @@ Use "virt-go [command] --help" for more information about a command.
 -------------------------------------
 -------------------------------------
 ```
+
+### virt-go command의 자동완성을 설정합니다.
+
+```
+[root@virt-go-server ~]# virt-go completion bash > /etc/bash_completion.d/virt-go
+[root@virt-go-server ~]# . /etc/bash_completion.d/virt-go 
+```
