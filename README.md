@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/YoungjuWang/virt-go)](https://goreportcard.com/report/github.com/YoungjuWang/virt-go)
 [![GitHub license](https://img.shields.io/github/license/YoungjuWang/virt-go?style=flat-square)](https://github.com/YoungjuWang/virt-go/blob/v2/LICENSE)
-[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg =x20)](https://forthebadge.com)
+<img src="https://forthebadge.com/images/badges/made-with-go.svg" height="20">
 
 [ENG](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/README.md)
 
