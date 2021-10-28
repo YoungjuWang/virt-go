@@ -1,5 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/YoungjuWang/virt-go)](https://goreportcard.com/report/github.com/YoungjuWang/virt-go)
 [![GitHub license](https://img.shields.io/github/license/YoungjuWang/virt-go?style=flat-square)](https://github.com/YoungjuWang/virt-go/blob/v2/LICENSE)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com =x20)
 
 [ENG](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/README.md)
 
@@ -7,8 +8,6 @@
 
 <p align="center">
   <img src="https://github.com/YoungjuWang/virt-go/blob/v2/img/virt-go2.png">
-  <br>
-  <img src="https://forthebadge.com/images/badges/made-with-go.svg">
 </p>
 
 'virt-go' 는 libvirt 환경에서 VM을 편리하게 관리하기 위한 프로그램으로 cloud image와 cloud-init을 이용해서 빠르게 VM 관리할 수 있도록 돕습니다.
