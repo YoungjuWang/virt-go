@@ -104,7 +104,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoMfjixSZyW5g3Z6EomG3jAsoaJlJfGBYSCC5z96YZ
 ### Edit cloud-init user-data contents.
 
 ```
-[root@virt-go-server virt-go]# sed -i 's,- <pub-key>,- '"$(cat ~/.ssh/id_rsa.pub)"',g' /data/virt -go/cloud-init/user-data
+[root@virt-go-server virt-go]# sed -i 's,- <pub-key>,- '"$(cat ~/.ssh/id_rsa.pub)"',g' /data/virt-go/cloud-init/user-data
 ```
 
 
