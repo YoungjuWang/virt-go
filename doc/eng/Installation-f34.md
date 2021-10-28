@@ -1,6 +1,7 @@
 ### Download the virt-go project from git.
 
 ```
+[root@virt-go-server ~]# dnf install git
 [root@virt-go-server ~]# git clone https://github.com/YoungjuWang/virt-go.git
 Cloning into 'virt-go'...
 remote: Enumerating objects: 403, done.
@@ -16,6 +17,14 @@ Resolving deltas: 100% (224/224), done.
 install golang >= 1.17
 https://golang.org/doc/install
 
+Example of 1.17.2 version installation.
+```
+[root@virt-go-server ~]# dnf install tar
+[root@virt-go-server ~]# curl -LO https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
+[root@virt-go-server ~]# rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
+[root@virt-go-server ~]# export PATH=$PATH:/usr/local/go/bin
+```
+
 Check the installed go version.
 
 ```
@@ -27,6 +36,11 @@ go version go1.17.2 linux/amd64
 
 ```
 [root@virt-go-server ~]# cd virt-go/
+```
+
+### Install required packages on Fedora 34
+```
+[root@virt-go-server ~]# dnf install libvirt genisoimage qemu-img libvirt-libs pkgconf-pkg-config libvirt-devel gcc bash-completion qemu-kvm
 ```
 
 ### Download the modules required for virt-go.
@@ -97,6 +111,7 @@ netAddr=10.62.62.0
 Prepare ssh public key to access virt-go vm without password through key authentication.
 
 ```
+[root@virt-go-server virt-go]# ssh-keygen -f ~/.ssh/id_rsa
 [root@virt-go-server virt-go]# cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoMfjixSZyW5g3Z6EomG3jAsoaJlJfGBYSCC5z96YZZqVTcv2SggJnnLCSqVM00 / jpLHs5cHbR74jkJaLDBT3TDKVN / ovqXk4V0eoewaDiQ0p1cmCLsmeVGt8lg2kR1PCjqMLtYFPjU9j + DfD1vIYxqzo1uQJIuOZ / 1g2IdkRA63lDIZKhXr4Pr1oIhIgnvTM2Ep4imYCYKZ + kxpfF + inCoG8kjUGDg / + kUWEFXvgOF1 / IAi / kvIMICLeM5wYnU68AjUi0SMgtaQN1tjIluo / S3 / 1OqTpWmY0jnVZ + shFTZIhgVmT9fHdJHnaCOAdTwl9SQrrALlYG8DoT + ZVVFIEeAUJH6 (omitted)
 ```
@@ -150,6 +165,7 @@ Use "virt-go [command] --help" for more information about a command.
 ### Create a virt-go network.
 
 ```
+[root@virt-go-server virt-go]# systemctl start libvirtd
 [root@virt-go-server virt-go]# virt-go init
 ■ Create network XML file.
 ■ Set 'virt-go-net' to autostart.

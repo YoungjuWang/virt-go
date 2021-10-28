@@ -30,6 +30,7 @@ The items below must be installed and running beforehand.
 Please refer to the guide below for use.
 
 - [Installation - Configure and Build the virt-go Environment](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Installation.md)
+- [Installation (Fedora 34) - Configure and Build the virt-go Environment](Installation-f34.md)
 - [Createation - Create VM, Image](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Creation.md)
 - [Deletion - Delete VM, Image](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Deletion.md)
 - [Connection - Connect to VM ssh](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Connection.md)
