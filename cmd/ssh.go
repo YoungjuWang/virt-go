@@ -17,8 +17,7 @@ var sshCmd = &cobra.Command{
 	Short: "Connect to virt-go VM via ssh",
 	Run: func(cmd *cobra.Command, args []string) {
 		vmNetAddr := g.netAddr + "." + strconv.Itoa(int(v.num))
-
-		scmd := exec.Command("ssh", user+"@"+vmNetAddr, "-p", "22", "-o", "StrictHostKeyChecking=no")
+		scmd := exec.Command("ssh", user+"@"+vmNetAddr, "-p", "22", "-o", "StrictHostKeyChecking=yes", "-o", "UserKnownHostsFile=/dev/null")
 		scmd.Stdin = os.Stdin
 		scmd.Stdout = os.Stdout
 		scmd.Stderr = os.Stderr
