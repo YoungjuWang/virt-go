@@ -20,6 +20,7 @@ growpart:
 runcmd:
   - sed -i '/PermitRootLogin prohibit-password/a\PermitRootLogin yes' /etc/ssh/sshd_config
   - sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  - systemctl restart sshd
 
 power_state:
   mode: reboot
