@@ -1,3 +1,15 @@
+### virt-go 버전 확인
+
+```
+[root@virt-go-server virt-go]# virt-go version
+latest version :  2.0.02
+installed version :  2.0.01
+
+ You need to update virt-go
+ ```
+
+ 위 명령어 결과에서 `You need to update virt-go` 메시지가 보인다면 아래 과정을 진행하시기 바랍니다.
+
 ### virt-go 최신 git 파일 pull
 
 ```
@@ -33,4 +45,14 @@ VM 과 상관 없이 command만 rebuild하면 됩니다.
 
 ```
 [root@virt-go-server virt-go]# go build -o /usr/local/bin/virt-go
+```
+
+### Update 확인
+
+```
+[root@virt-go-server virt-go]# virt-go version
+latest version :  2.0.02
+installed version :  2.0.02 
+
+ You have latest virt-go 
 ```
