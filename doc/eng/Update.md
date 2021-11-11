@@ -1,3 +1,16 @@
+### Check virt-go version
+
+```
+[root@virt-go-server virt-go]# virt-go version
+latest version : 2.0.02
+installed version : 2.0.01
+
+  You need to update virt-go
+  ```
+
+  If you see the message `You need to update virt-go` in the above command result, proceed as follows.
+
+
 ### virt-go pull latest git file
 
 ```
@@ -33,4 +46,14 @@ You only need to rebuild the command regardless of the VM.
 
 ```
 [root@virt-go-server virt-go]# go build -o /usr/local/bin/virt-go
+```
+
+### Check for Update
+
+```
+[root@virt-go-server virt-go]# virt-go version
+latest version : 2.0.02
+installed version : 2.0.02
+
+  You have latest virt-go
 ```
