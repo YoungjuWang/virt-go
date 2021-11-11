@@ -10,6 +10,7 @@ installed version :  2.0.01
 
  위 명령어 결과에서 `You need to update virt-go` 메시지가 보인다면 아래 과정을 진행하시기 바랍니다.
 
+
 ### virt-go 최신 git 파일 pull
 
 ```
