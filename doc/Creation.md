@@ -58,6 +58,53 @@ ex) /base/image/path/file : /root/focal-server-cloudimg-amd64.img
 -------------------------------------
 ```
 
+### 새로운 Image 생성 [None Image]
+
+경우에 따라 base-image 가 없는 즉 OS가 설치되지 않은 Image가 필요한 경우가 있습니다.
+
+우선 빈 이미지 qcow2를 생성합니다.
+
+```
+[root@virt-go-server ~]# qemu-img create -f qcow2 none-base.qcow2 5G
+
+[root@virt-go-server ~]# qemu-img info none-base.qcow2
+image: none-base.qcow2
+file format: qcow2
+virtual size: 5.0G (5368709120 bytes)
+disk size: 196K
+cluster_size: 65536
+Format specific information:
+    compat: 1.1
+    lazy refcounts: false
+    refcount bits: 16
+    corrupt: false
+```
+
+이후 해당 qcow2를 활용하여 virt-go image를 생성합니다.
+
+```
+[root@virt-go-server ~]# virt-go create -i none
+Create image only.
+!! none doesn't exist. Create image first.
+
+Please input base-image file full path.
+ex) /base/image/path/file : none-base.qcow2
+
+■  Create image.
+```
+
+생성된 none image를 확인합니다.
+
+```
+[root@virt-go-server ~] virt-go list
+---------------------------------------------
+ RESOURCE     STATE                          
+---------------------------------------------
+ Data-Dir     /data/virt-go                  
+ virt-go-net  10.62.62.xxx                   
+ Images       c83  none  r79  u20  u20cust   
+ ```
+
 ### Image로 VM 생성
 
 위에서 생성한 `u20` Image를 활용하여 VM을 생성합니다.
