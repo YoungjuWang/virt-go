@@ -27,6 +27,13 @@ https://yjwang.tistory.com/147
 - 'qemu-img' commnad
 - 'libvirt-lib' package 
 
+```
+Ubuntu 환경에서의 libvirt설치는 아래 문서를 참고하시기 바랍니다.
+
+https://ubuntu.com/server/docs/virtualization-libvirt
+```
+
+
 ## Index
 
 아래 가이드를 참고하시어 사용하시기 바랍니다.
