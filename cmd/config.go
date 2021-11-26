@@ -19,6 +19,7 @@ type vmConfig struct {
 	size     uint
 	userData string
 	metaData string
+	disks    string
 }
 
 func (v *vmConfig) checkNumber() bool {
