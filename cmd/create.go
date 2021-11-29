@@ -143,6 +143,9 @@ func createVM() {
 		log.Fatal(err)
 	}
 
+	// createAdditionalDisks
+	createAdditionalDisks(v.disks, v.name, dom)
+
 	fmt.Println(colorGreen + "successfully finished" + colorReset)
 }
 
@@ -273,6 +276,77 @@ func checkVMExists() {
 	}
 }
 
+func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
+	if vdisks == "none" {
+		fmt.Println("Finish")
+		return
+	}
+
+	splitString := func(s string) []string {
+		replacedString := strings.Replace(s, ",", " ", -1)
+		splitedString := strings.Split(replacedString, " ")
+
+		for _, arg := range splitedString {
+			// check value is integer
+			_, err := strconv.Atoi(arg)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		return splitedString
+	}
+
+	attachDisk := func(x string) {
+		err := dom.AttachDevice(x)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	createDisk := func(s []string) {
+		for idx, arg := range s {
+			volFile := g.dataDir + "/volumes/" + vname + "-" + strconv.Itoa(idx+1)
+
+			fmt.Printf("■  Create '%s' disk.\n", volFile)
+
+			cmd := exec.Command("qemu-img", "create", volFile, arg+"G")
+			err := cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			targetDevAscii := idx + 97
+			targetDev := "vd" + string(targetDevAscii)
+
+			diskXMLCfg := &libvirtxml.DomainDisk{
+				Driver: &libvirtxml.DomainDiskDriver{
+					Name: "qemu",
+					Type: "raw",
+				},
+				Source: &libvirtxml.DomainDiskSource{
+					File: &libvirtxml.DomainDiskSourceFile{File: volFile},
+				},
+				Target: &libvirtxml.DomainDiskTarget{
+					Dev: targetDev,
+					Bus: "virtio",
+				},
+			}
+
+			diskXML, err := diskXMLCfg.Marshal()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			attachDisk(diskXML)
+		}
+	}
+
+	splitedString := splitString(vdisks)
+	createDisk(splitedString)
+
+}
+
 func init() {
 	rootCmd.AddCommand(createCmd)
 
@@ -289,7 +363,7 @@ func init() {
 	createCmd.Flags().UintVarP(&v.size, "size", "s", 20, "VM's Root Volume Size (GB)")
 	createCmd.Flags().StringVar(&v.userData, "user-data", g.dataDir+"/cloud-init/user-data", "cloud-init user-data")
 	createCmd.Flags().StringVar(&v.metaData, "meta-data", g.dataDir+"/cloud-init/meta-data", "cloud-init meta-data")
-	createCmd.Flags().StringVar(&v.disks, "disks", "none")
+	createCmd.Flags().StringVar(&v.disks, "disks", "none", "additional disk list")
 }
 
 var createCmd = &cobra.Command{
