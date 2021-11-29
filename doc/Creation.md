@@ -195,6 +195,22 @@ successfully finished
 --------------------------------------------------------------
 ```
 
+
+### OS 영역 외 Data Disk가 있는 VM 생성
+
+아래와 같이 command를 실행하면 10G 3개의 별도 disk가 서버에 추가됩니다.
+
+```
+[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "10 10 10"
+```
+
+아래와 같이 command를 실행하면 10G 1개, 20G 2개의 별도 disk가 서버에 추가됩니다.
+
+```
+[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "10 20 20"
+```
+
+
 ### 추가 Option
 
 VM 생성 시 Spec을 수정할 수 있도록 다양한 Option을 개발해놓았으니 `help` command를 확인해보시기 바랍니다.

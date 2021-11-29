@@ -196,6 +196,22 @@ Check the created VM.
 ------------------------------------------------------------ ------------
 ```
 
+
+### Create a VM with Data Disk outside the OS area
+
+If you execute the command as below, 3 separate disks of 10G are added to the server.
+
+```
+[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "10 10 10"
+```
+
+If you execute the command as below, 1 10G and 2 20G separate disks are added to the server.
+
+```
+[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "10 20 20"
+```
+
+
 ### Additional Options
 
 We have developed various options so that you can modify the Spec when creating a VM, so please check the `help` command.
