@@ -58,7 +58,7 @@ ex) /base/image/path/file : /root/focal-server-cloudimg-amd64.img
 -------------------------------------
 ```
 
-### 새로운 Image 생성 [None Image]
+### (Option) 새로운 Image 생성 [None Image]
 
 경우에 따라 base-image 가 없는 즉 OS가 설치되지 않은 Image가 필요한 경우가 있습니다.
 
@@ -215,5 +215,6 @@ Flags:
   -s, --size uint          VM's Root Volume Size (GB) (default 20)
       --user-data string   cloud-init user-data (default "/etc/virt-go/cloud-init/user-data")
       --meta-data string   cloud-init meta-data (default "/etc/virt-go/cloud-init/meta-data")
+      --disks string       additional disk list (default "none")
   -h, --help               help for create
 ```
