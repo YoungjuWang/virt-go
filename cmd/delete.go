@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	libvirt "libvirt.org/libvirt-go"
@@ -93,6 +94,19 @@ func deleteVM() {
 	err = os.Remove(g.dataDir + "/volumes/" + domName)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Delete volume file.
+	files, err := filepath.Glob(g.dataDir + "/volumes/" + domName + "*.img")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, f := range files {
+		fmt.Printf("■  Delete %s.\n", f)
+		err := os.Remove(f)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 

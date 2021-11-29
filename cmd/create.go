@@ -306,7 +306,7 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 
 	createDisk := func(s []string) {
 		for idx, arg := range s {
-			volFile := g.dataDir + "/volumes/" + vname + "-" + strconv.Itoa(idx+1)
+			volFile := g.dataDir + "/volumes/" + vname + "-" + strconv.Itoa(idx+1) + ".img"
 
 			fmt.Printf("■  Create '%s' disk.\n", volFile)
 
