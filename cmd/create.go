@@ -297,7 +297,7 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 		return splitedString
 	}
 
-	attachDisk := func(x string) {
+	attachDisk := func(x string, dom *libvirt.Domain) {
 		err := dom.AttachDevice(x)
 		if err != nil {
 			log.Fatal(err)
@@ -338,7 +338,7 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 				log.Fatal(err)
 			}
 
-			attachDisk(diskXML)
+			attachDisk(diskXML, dom)
 		}
 	}
 
