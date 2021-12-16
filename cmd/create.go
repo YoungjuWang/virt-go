@@ -278,7 +278,6 @@ func checkVMExists() {
 
 func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 	if vdisks == "none" {
-		fmt.Println("Finish")
 		return
 	}
 
