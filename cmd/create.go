@@ -389,6 +389,9 @@ func attachAdditionalNetworks(vnets string, vname string, dom *libvirt.Domain) {
 					Source: &libvirtxml.DomainInterfaceSource{
 						Network: &libvirtxml.DomainInterfaceSourceNetwork{Network: interfaceName},
 					},
+					Model: &libvirtxml.DomainInterfaceModel{
+						Type: "virtio",
+					},
 				}
 
 				netXML, err := networkXMLCfg.Marshal()
