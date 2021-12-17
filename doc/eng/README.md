@@ -35,6 +35,7 @@ Please refer to the guide below for use.
 - [Deletion - Delete VM, Image](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Deletion.md)
 - [Connection - Connect to VM ssh](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Connection.md)
 - [Operations - Start, Stop, Restart, Resize](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Operations.md)
+- [Add - Add disks, Add Interfaces](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Add.md)
 - [Clear - Clear virt-go environment](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Clear.md)
 - [Customization - Create Custom Image, Edit cloud-init configurations, Edit VM description](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Customization.md)
 - [Update - Update virt-go command](https://github.com/YoungjuWang/virt-go/blob/v2/doc/eng/Update.md)

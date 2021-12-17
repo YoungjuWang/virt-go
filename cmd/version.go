@@ -13,7 +13,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Get virt-go version",
 	Run: func(cmd *cobra.Command, args []string) {
-		version := "2.0.03"
+		version := "2.0.04"
 		gitVersion := func() string {
 			// https://raw.githubusercontent.com/YoungjuWang/virt-go/v2/version.txt
 			resp, err := http.Get("https://raw.githubusercontent.com/YoungjuWang/virt-go/v2/version.txt")

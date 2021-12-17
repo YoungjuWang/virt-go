@@ -43,6 +43,7 @@ https://ubuntu.com/server/docs/virtualization-libvirt
 - [Deletion - VM, Image 삭제](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Deletion.md)
 - [Connection - VM에 ssh로 접속](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Connection.md)
 - [Operations - VM 실행, 중지, 재시작, size 변경](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Operations.md)
+- [Add - disk 추가, Interface 추가](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Add.md)
 - [Clear - virt-go 환경 삭제](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Clear.md)
 - [Customization - Custom Image 생성, cloud-init data 변경](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Customization.md)
 - [Update - Update virt-go command](https://github.com/YoungjuWang/virt-go/blob/v2/doc/Update.md)
