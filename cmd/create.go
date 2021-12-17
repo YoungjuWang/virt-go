@@ -290,7 +290,7 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 	}
 
 	attachDisk := func(x string, dom *libvirt.Domain) {
-		err := dom.AttachDevice(x)
+		err := dom.AttachDeviceFlags(x, libvirt.DOMAIN_DEVICE_MODIFY_CONFIG^libvirt.DOMAIN_DEVICE_MODIFY_LIVE)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -367,7 +367,7 @@ func attachAdditionalNetworks(vnets string, vname string, dom *libvirt.Domain) {
 	}
 
 	attachInterface := func(x string, dom *libvirt.Domain) {
-		err := dom.AttachDevice(x)
+		err := dom.AttachDeviceFlags(x, libvirt.DOMAIN_DEVICE_MODIFY_CONFIG^libvirt.DOMAIN_DEVICE_MODIFY_LIVE)
 		if err != nil {
 			log.Fatal(err)
 		}
