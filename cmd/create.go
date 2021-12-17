@@ -353,6 +353,75 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 	createDisk(splitedString)
 }
 
+func attachAdditionalNetworks(vnets string, vname string, dom *libvirt.Domain) {
+	if vnets == "none" {
+		return
+	}
+
+	// Make "network=virt-go-net bridge=br0" to "[network=virt-go-net bridge=br0]"
+	splitString := func(s string) []string {
+		replacedString := strings.Replace(s, ",", " ", -1)
+		splitedString := strings.Split(replacedString, " ")
+
+		return splitedString
+	}
+
+	attachInterface := func(x string, dom *libvirt.Domain) {
+		err := dom.AttachDevice(x)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	createInterfaceXML := func(s []string) {
+		// s = [network=virt-go-net bridge=br0]
+		for _, interfaceinfos := range s {
+			// interfaceinfos = [network=virt-go-net]
+
+			interfaceinfo := strings.Split(interfaceinfos, "=")
+			// interfaceinfo = [network virt-go-net]
+
+			interfaceType := interfaceinfo[0]
+			interfaceName := interfaceinfo[1]
+
+			if interfaceType == "network" {
+				networkXMLCfg := &libvirtxml.DomainInterface{
+					Source: &libvirtxml.DomainInterfaceSource{
+						Network: &libvirtxml.DomainInterfaceSourceNetwork{Network: interfaceName},
+					},
+				}
+
+				netXML, err := networkXMLCfg.Marshal()
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				fmt.Printf("■  Attach '%s' network interface.\n", interfaceName)
+				attachInterface(netXML, dom)
+			}
+
+			if interfaceType == "bridge" {
+				networkXMLCfg := &libvirtxml.DomainInterface{
+					Source: &libvirtxml.DomainInterfaceSource{
+						Bridge: &libvirtxml.DomainInterfaceSourceBridge{Bridge: interfaceName},
+					},
+				}
+
+				netXML, err := networkXMLCfg.Marshal()
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				fmt.Printf("■  Attach '%s' network interface.\n", interfaceName)
+				attachInterface(netXML, dom)
+			}
+		}
+	}
+
+	splitedString := splitString(vnets)
+	createInterfaceXML(splitedString)
+}
+
 func init() {
 	rootCmd.AddCommand(createCmd)
 

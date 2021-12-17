@@ -43,7 +43,22 @@ var netCmd = &cobra.Command{
 	Use:   "net",
 	Short: "Add network to VM",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Network")
+		conn, err := libvirt.NewConnect("qemu:///system")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer conn.Close()
+
+		v.name = v.getRunningVMName(conn)
+		dom, err := conn.LookupDomainByName(v.name)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer dom.Free()
+
+		// function in create.go
+		attachAdditionalNetworks(v.nets, v.name, dom)
+		fmt.Println(colorGreen + "successfully finished" + colorReset)
 	},
 }
 
@@ -60,4 +75,9 @@ func init() {
 
 	// netCmd
 	addCmd.AddCommand(netCmd)
+	netCmd.Flags().SortFlags = false
+	netCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "Number, VM will use")
+	netCmd.MarkFlagRequired("number")
+	netCmd.Flags().StringVar(&v.nets, "nets", "none", "additional network list")
+	netCmd.MarkFlagRequired("nets")
 }
