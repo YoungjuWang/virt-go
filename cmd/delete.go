@@ -76,7 +76,7 @@ func deleteVM() {
 	}
 
 	// Delete root volume.
-	fmt.Printf("■  Delete %s volume.\n", domName)
+	fmt.Printf("■  Delete %s root volume.\n", domName)
 	err = os.Remove(g.dataDir + "/volumes/" + domName + "-root.qcow2")
 	if err != nil {
 		log.Fatal(err)
