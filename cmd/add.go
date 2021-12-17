@@ -33,6 +33,7 @@ var diskCmd = &cobra.Command{
 		}
 		defer dom.Free()
 
+		// function in create.go
 		createAdditionalDisks(v.disks, v.name, dom)
 		fmt.Println(colorGreen + "successfully finished" + colorReset)
 	},
@@ -55,7 +56,7 @@ func init() {
 	diskCmd.Flags().Uint8VarP(&v.num, "number", "n", 0, "Number, VM will use")
 	diskCmd.MarkFlagRequired("number")
 	diskCmd.Flags().StringVar(&v.disks, "disks", "none", "additional disk list")
-	//diskCmd.MarkFlagRequired("disks")
+	diskCmd.MarkFlagRequired("disks")
 
 	// netCmd
 	addCmd.AddCommand(netCmd)

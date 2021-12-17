@@ -202,13 +202,13 @@ Check the created VM.
 If you execute the command as below, 3 separate disks of 10G are added to the server.
 
 ```
-[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "10 10 10"
+[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "vda=10 vdb=10 vdc=10"
 ```
 
 If you execute the command as below, 1 10G and 2 20G separate disks are added to the server.
 
 ```
-[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "10 20 20"
+[root@virt-go-server ~]# virt-go create -i u20 -n 50 --disks "vda=10 vdb=20 vdc=20"
 ```
 
 

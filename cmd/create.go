@@ -281,17 +281,10 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 		return
 	}
 
+	// Make "vda=10 vdb=20" to "[vda=10 vdb=20]"
 	splitString := func(s string) []string {
 		replacedString := strings.Replace(s, ",", " ", -1)
 		splitedString := strings.Split(replacedString, " ")
-
-		for _, arg := range splitedString {
-			// check value is integer
-			_, err := strconv.Atoi(arg)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
 
 		return splitedString
 	}
@@ -304,19 +297,33 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 	}
 
 	createDisk := func(s []string) {
-		for idx, arg := range s {
-			volFile := g.dataDir + "/volumes/" + vname + "-" + strconv.Itoa(idx+1) + ".img"
+		// s = [vda=10 vdb=20]
+		for _, diskinfos := range s {
+			// diskinfos = [vda=10]
 
-			fmt.Printf("■  Create '%s' disk.\n", volFile)
+			diskinfo := strings.Split(diskinfos, "=")
+			// diskinfo = [vda 10]
 
-			cmd := exec.Command("qemu-img", "create", volFile, arg+"G")
-			err := cmd.Run()
+			diskName := diskinfo[0]
+			diskSize := diskinfo[1]
+			_, err := strconv.Atoi(diskSize)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			targetDevAscii := idx + 97
-			targetDev := "vd" + string(targetDevAscii)
+			volFile := g.dataDir + "/volumes/" + vname + "-" + diskName + ".img"
+			fmt.Printf("■  Create '%s' disk.\n", volFile)
+
+			// Check volFIle already exists
+			if _, err := os.Stat(volFile); err == nil || os.IsExist(err) {
+				log.Fatal(volFile + " already exists.")
+			}
+
+			cmd := exec.Command("qemu-img", "create", volFile, diskSize+"G")
+			err = cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
 
 			diskXMLCfg := &libvirtxml.DomainDisk{
 				Driver: &libvirtxml.DomainDiskDriver{
@@ -327,7 +334,7 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 					File: &libvirtxml.DomainDiskSourceFile{File: volFile},
 				},
 				Target: &libvirtxml.DomainDiskTarget{
-					Dev: targetDev,
+					Dev: diskName,
 					Bus: "virtio",
 				},
 			}
@@ -337,13 +344,13 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 				log.Fatal(err)
 			}
 
+			fmt.Printf("■  Attach '%s' disk.\n", volFile)
 			attachDisk(diskXML, dom)
 		}
 	}
 
 	splitedString := splitString(vdisks)
 	createDisk(splitedString)
-
 }
 
 func init() {
