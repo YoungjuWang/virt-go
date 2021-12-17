@@ -146,6 +146,9 @@ func createVM() {
 	// createAdditionalDisks
 	createAdditionalDisks(v.disks, v.name, dom)
 
+	// attachAdditionalNetworks
+	attachAdditionalNetworks(v.nets, v.name, dom)
+
 	fmt.Println(colorGreen + "successfully finished" + colorReset)
 }
 
@@ -311,7 +314,7 @@ func createAdditionalDisks(vdisks string, vname string, dom *libvirt.Domain) {
 				log.Fatal(err)
 			}
 
-			volFile := g.dataDir + "/volumes/" + vname + "-" + diskName + ".img"
+			volFile := g.dataDir + "/volumes/" + vname + "-" + diskName + "-" + diskSize + "G-.img"
 			fmt.Printf("■  Create '%s' disk.\n", volFile)
 
 			// Check volFIle already exists
@@ -442,6 +445,7 @@ func init() {
 	createCmd.Flags().StringVar(&v.userData, "user-data", g.dataDir+"/cloud-init/user-data", "cloud-init user-data")
 	createCmd.Flags().StringVar(&v.metaData, "meta-data", g.dataDir+"/cloud-init/meta-data", "cloud-init meta-data")
 	createCmd.Flags().StringVar(&v.disks, "disks", "none", "additional disk list")
+	createCmd.Flags().StringVar(&v.nets, "nets", "none", "additional network list")
 }
 
 var createCmd = &cobra.Command{
