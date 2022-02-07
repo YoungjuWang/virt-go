@@ -449,8 +449,9 @@ func init() {
 }
 
 var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Create VM or Image",
+	Use:     "create",
+	Short:   "Create VM or Image",
+	Example: "- Minimal\nvirt-go create -i u20 -n 10\n- Using some options\nvirt-go create -i u20 -n 10 -c 4 -m 16 -s 50 --nets \"network=virt-go-net bridge=public-br\" --disks \"vda=10 vdb=10 vdc=10\" -d \"sample test server\"",
 	Run: func(cmd *cobra.Command, args []string) {
 		createVM()
 	},

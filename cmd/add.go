@@ -17,8 +17,9 @@ var addCmd = &cobra.Command{
 }
 
 var diskCmd = &cobra.Command{
-	Use:   "disk",
-	Short: "Add disks to VM",
+	Use:     "disk",
+	Short:   "Add disks to VM",
+	Example: "virt-go add disk -n 10 --disks \"vda=10 vdb=20\"",
 	Run: func(cmd *cobra.Command, args []string) {
 		conn, err := libvirt.NewConnect("qemu:///system")
 		if err != nil {
@@ -40,8 +41,9 @@ var diskCmd = &cobra.Command{
 }
 
 var netCmd = &cobra.Command{
-	Use:   "net",
-	Short: "Add network to VM",
+	Use:     "net",
+	Short:   "Add network to VM",
+	Example: "virt-go add net -n 10 --nets \"bridge=public-br network=virt-go-net\"",
 	Run: func(cmd *cobra.Command, args []string) {
 		conn, err := libvirt.NewConnect("qemu:///system")
 		if err != nil {
